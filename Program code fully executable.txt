@@ -1,0 +1,4320 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+import java.applet.Applet;
+import java.awt.Button;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;//abstract
+import java.awt.TextArea;
+import java.awt.TextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+/**
+ *
+ * @author Er-Babu
+ */
+/*  class faceclass
+    {
+
+
+             String fname="";
+            public double fmid=0;
+            public int AB=0,AD=0,AF=0,BC=0,BE=0,CD=0,CH=0,DG=0,FG=0,GH=0,EH=0,EF=0;     
+    }   */
+public class projectwork extends Applet implements ActionListener {
+	
+	
+	//public int c[]={50,20,-5};   //CAMERA COORDINATE...........
+   public int c[]={40,-25,50};
+       //public int e[]={0,4,28};  //view COORDINATE...........
+    public int e[]={40,-25,47};
+
+  //  public int s[]={40,-23,50};     // source of light............
+	public int s[]={-50,-10,30};
+	   int Origin[]= {0,0,0};   //Origin
+
+       int v1[]={10,-10,10};     //D                 // BOX TYPE 1
+       int v2[]={-10,-10,10};     //C
+       int v3[]= {10,10,10};    //B
+       int v4[]={-10,10,10};    //A
+       int v5[]={10,-10,-10};      //H
+       int v6[]={-10,-10,-10};      //G
+       int v7[]={10,10,-10};     //F
+       int v8[]={-10,10,-10};     //E
+       int perp[]= {-10,25,-10};
+
+
+
+     /* int v1[]={10,-25,10};     //D                 // BOX TYPE 2(Below Eye Level)
+       int v2[]={-10,-25,10};     //C
+       int v3[]= {10,-15,10};    //B
+       int v4[]={-10,-15,10};    //A
+       int v5[]={10,-25,-10};      //H
+       int v6[]={-10,-25,-10};      //G
+       int v7[]={10,-15,-10};     //F
+       int v8[]={-10,-15,-10};     //E
+       int perp[]= {-10,0,-10};  
+      */
+
+    /*  int v1[]={10,10,10};     //D                 // BOX TYPE 3(Above Eye Level)
+       int v2[]={-10,10,10};     //C
+       int v3[]= {10,30,10};    //B
+       int v4[]={-10,30,10};    //A
+       int v5[]={10,10,-10};      //H
+       int v6[]={-10,10,-10};      //G
+       int v7[]={10,30,-10};     //F
+       int v8[]={-10,30,-10};     //E  
+       int perp[]= {-10,70,-10};
+       */
+
+       int v1dash[]={0,0,0};     //D                 // BOX TYPE 1
+       int v2dash[]={0,0,0};     //C
+       int v3dash[]= {0,0,0};    //B
+       int v4dash[]={0,0,0};    //A
+       int v5dash[]={0,0,0};      //H
+       int v6dash[]={0,0,0};      //G
+       int v7dash[]={0,0,0};     //F
+       int v8dash[]={0,0,0};     //E
+
+
+        int midbacd[]= new int[3];
+        int mideacg[]= new int[3];
+        int midhgcd[]= new int[3];
+        int midfegh[]= new int[3];
+        int midfeab[]= new int[3];
+        int midfbdh[]= new int[3];
+       int anglealpha=0,anglebeta=0,anglegamma=0;
+
+       double alpha=Math.toRadians(anglealpha);;
+       double beta=Math.toRadians(anglebeta);
+       double gamma=Math.toRadians(anglegamma);
+
+
+       double cx=Math.cos(alpha);
+       double sx=Math.sin(alpha);;
+
+       double cy=Math.cos(beta);;
+       double sy=Math.sin(beta);;
+
+       double cz=Math.cos(gamma);;
+       double sz=Math.sin(gamma);;
+
+       int choosecamera=0;
+       double pc,qc,rc,zc=-45.0,xc=-105.0,yc=-95.0;
+       double dx=0.0,dy=0.0,dz=0.0;
+
+       int fa[]= new int [3];
+       int fb[]= new int [3];
+       int fc[]= new int [3];
+       int fd[]= new int [3];
+       int fe[]= new int [3];
+       int ff[]= new int [3];
+       int fg[]= new int [3];
+       int fh[]= new int [3];
+       int fPerpendicualr[]=new int [3];
+
+       int a[]= new int[2];
+       int b[]= new int[2];
+       int cc[]= new int[2];
+       int d[]= new int[2];
+       int ee[]= new int[2];
+       int f[]= new int[2];
+       int gg[]= new int[2];
+       int h[]= new int[2];
+       int Perpendicular[]=new int[2];
+       double bx,by;
+       int plotcentre2dx=0,plotcentre2dy=0;
+       int centrebx,centreby;
+       int rotx,roty;
+	   double phi,theta,costheta,cosphi,sintheta,sinphi;
+
+           double dv1,dv2,dv3,dv4,dv5,dv6,dv7,dv8;
+           double disBetweenCameraVertices[]=new double[8];
+           double clip;
+           int chooseColor=0,choosecolor2=0;
+
+           // SORTING FOR CLIPPING.....
+           int tempMaxMin[]={0,0,0,0};
+           int maxXDCAB=0;
+           int minXDCAB=0;
+
+           int maxYDCAB=0;
+           int minYDCAB=0;
+
+           int maxXFEAB=0;
+           int minXFEAB=0;
+
+           int maxYFEAB=0;
+           int minYFEAB=0;
+
+           int maxXHGCD=0;
+           int minXHGCD=0;
+
+           int maxYHGCD=0;
+           int minYHGCD=0;
+
+           int maxXGCAE=0;
+           int minXGCAE=0;
+
+           int maxYGCAE=0;
+           int minYGCAE=0;
+
+           int maxXHDBF=0;
+           int minXHDBF=0;
+
+           int maxYHDBF=0;
+           int minYHDBF=0;
+
+           int maxXHGEF=0;
+           int minXHGEF=0;
+
+           int maxYHGEF=0;
+           int minYHGEF=0;
+
+           public void bubblesort()
+           {
+               for(int i=0;i<4;i++)
+            {
+                for(int j=0;j<4-i-1;j++)
+                {
+                    if(tempMaxMin[j]>tempMaxMin[j+1])
+                    {
+                        int temp=tempMaxMin[j];
+                        tempMaxMin[j]=tempMaxMin[j+1];
+                        tempMaxMin[j+1]=temp;
+                    }
+                }
+            }
+
+           }
+
+    public void calculateDistanceFromCameraToVertices()
+    {
+        dv1=Math.sqrt(Math.pow((c[0]-v1[0]),2)+Math.pow((c[1]-v1[1]),2)+Math.pow((c[2]-v1[2]),2));
+        dv2=Math.sqrt(Math.pow((c[0]-v2[0]),2)+Math.pow((c[1]-v2[1]),2)+Math.pow((c[2]-v2[2]),2));
+        dv3=Math.sqrt(Math.pow((c[0]-v3[0]),2)+Math.pow((c[1]-v3[1]),2)+Math.pow((c[2]-v3[2]),2));
+        dv4=Math.sqrt(Math.pow((c[0]-v4[0]),2)+Math.pow((c[1]-v4[1]),2)+Math.pow((c[2]-v4[2]),2));
+        dv5=Math.sqrt(Math.pow((c[0]-v5[0]),2)+Math.pow((c[1]-v5[1]),2)+Math.pow((c[2]-v5[2]),2));
+        dv6=Math.sqrt(Math.pow((c[0]-v6[0]),2)+Math.pow((c[1]-v6[1]),2)+Math.pow((c[2]-v6[2]),2));
+        dv7=Math.sqrt(Math.pow((c[0]-v7[0]),2)+Math.pow((c[1]-v7[1]),2)+Math.pow((c[2]-v7[2]),2));
+        dv8=Math.sqrt(Math.pow((c[0]-v8[0]),2)+Math.pow((c[1]-v8[1]),2)+Math.pow((c[2]-v8[2]),2));
+        System.out.println("Distance from camera to vertex v1="+dv1);
+        System.out.println("Distance from camera to vertex v2="+dv2);
+        System.out.println("Distance from camera to vertex v3="+dv3);
+        System.out.println("Distance from camera to vertex v4="+dv4);
+        System.out.println("Distance from camera to vertex v5="+dv5);
+        System.out.println("Distance from camera to vertex v6="+dv6);
+        System.out.println("Distance from camera to vertex v7="+dv7);
+        System.out.println("Distance from camera to vertex v8="+dv8);
+        disBetweenCameraVertices[0]=dv1;
+        disBetweenCameraVertices[1]=dv2;
+        disBetweenCameraVertices[2]=dv3;
+        disBetweenCameraVertices[3]=dv4;
+        disBetweenCameraVertices[4]=dv5;
+        disBetweenCameraVertices[5]=dv6;
+        disBetweenCameraVertices[6]=dv7;
+        disBetweenCameraVertices[7]=dv8;
+
+        // BUBBLE SORTING.................
+    for(int i=0;i<8;i++)
+    {
+        for(int j=0;j<8-i-1;j++)
+        {
+            if(disBetweenCameraVertices[j]>disBetweenCameraVertices[j+1])
+            {
+                double temp=disBetweenCameraVertices[j];
+                disBetweenCameraVertices[j]=disBetweenCameraVertices[j+1];
+                disBetweenCameraVertices[j+1]=temp;
+            }
+        }
+    }
+    clip=disBetweenCameraVertices[7];
+    for(int i=0;i<8;i++)
+        System.out.println(disBetweenCameraVertices[i]);
+
+
+
+    System.out.println("clip: "+clip);   
+    }
+
+
+
+     public void   calculateMidpoints()
+       {
+           //MID POINTS.....................
+
+    //int midbacd[]={10,5,-15};
+    midbacd[0]=(v1[0]+v2[0])/2;
+    midbacd[1]=(v1[1]+v3[1])/2;
+    midbacd[2]=(v1[2]+v2[2])/2;
+    // int mideacg[]={5,5,-20};
+    mideacg[0]=(v2[0]+v6[0])/2;
+    mideacg[1]=(v2[1]+v4[1])/2;
+    mideacg[2]=(v2[2]+v4[2])/2;
+
+   // int mideacg[]={v2[0]-5,v2[1]+5,v2[2]};
+    //int midhgcd[]={5,0,-15};
+    midhgcd[0]=(v1[0]+v5[0])/2;
+    midhgcd[1]=(v1[1]+v5[1])/2;
+    midhgcd[2]=(v1[2]+v2[2])/2;
+  //  int midhgcd[]={v1[0]-5,v1[1],v1[2]-5};
+    //int midfegh[]={0,5,-15};
+    midfegh[0]=(v7[0]+v5[0])/2;
+    midfegh[1]=(v7[1]+v5[1])/2;
+    midfegh[2]=(v7[2]+v8[2])/2;
+  //  int midfegh[]={v7[0],v7[1]-5,v7[2]-5};
+    //int midfeab[]={5,10,-15};
+    midfeab[0]=(v7[0]+v3[0])/2;
+    midfeab[1]=(v7[1]+v3[1])/2;
+    midfeab[2]=(v7[2]+v8[2])/2;
+  //  int midfeab[]={v3[0]-5,v3[1],v3[2]-5};
+    //int midfbdh[]={5,5,-10};
+ //   int midfbdh[]={v1[0]-5,v1[1]+5,v1[2]};
+    midfbdh[0]=(v1[0]+v5[0])/2;
+    midfbdh[1]=(v1[1]+v3[1])/2;
+    midfbdh[2]=(v1[2]+v5[2])/2;
+       }
+     
+     int r=2;
+    int g=2;
+    int bb=2;
+    Color blueColor = new Color(r,g,bb+253);
+
+    Color redColor = new Color(r+253,g,bb);
+  //  double redtest=redColor.get
+    Color blackColor = new Color(r,g,bb);
+    Color greenColor = new Color(r,g+253,bb);
+    Color yellowColor = new Color(r+253,g+253,bb);
+    Color pinkColor = new Color(r+253,g+173,bb+173);
+
+    public void resetVertices()
+    {
+       Origin[0]=0;   //Origin
+       Origin[1]=0;
+       Origin[2]=0;
+
+       v1dash[0]=0;
+        v1dash[1]=0;
+        v1dash[2]=0;
+
+       v2dash[0]=0;
+       v2dash[1]=0;
+       v2dash[2]=0;
+
+       v3dash[0]=0;
+       v3dash[1]=0;
+       v3dash[2]=0;//220=20
+
+       v4dash[0]=0;
+       v4dash[1]=0;
+       v4dash[2]=0;
+
+       v5dash[0]=0;
+       v5dash[1]=0;
+       v5dash[2]=0;
+
+       v6dash[0]=0;
+       v6dash[1]=0;
+       v6dash[2]=0;
+
+       v7dash[0]=0;
+       v7dash[1]=0;
+       v7dash[2]=0;
+
+       v8dash[0]=0;
+       v8dash[1]=0;
+       v8dash[2]=0;
+
+       v1[0]=10;
+        v1[1]=-10;
+        v1[2]=10;
+
+       v2[0]=-10;
+       v2[1]=-10;
+       v2[2]=10;
+
+       v3[0]=10;
+       v3[1]=10;
+       v3[2]=10;//220=20
+
+       v4[0]=-10;
+       v4[1]=10;
+       v4[2]=10;
+
+       v5[0]=10;
+       v5[1]=-10;
+       v5[2]=-10;
+
+       v6[0]=-10;
+       v6[1]=-10;
+       v6[2]=-10;
+
+       v7[0]=10;
+       v7[1]=10;
+       v7[2]=-10;
+
+       v8[0]=-10;
+       v8[1]=10;
+       v8[2]=-10;
+       perp[0]=-10;
+       perp[1]=25;
+       perp[2]=-10;
+       
+        blueColor = new Color(2,2,255);
+
+     redColor = new Color(255,2,2);
+  //  double redtest=redColor.get
+     blackColor = new Color(2,2,2);
+     greenColor = new Color(2,255,2);
+     yellowColor = new Color(255,255,2);
+     pinkColor = new Color(255,175,175);
+
+    }
+
+
+    
+   // Color pinkColor = Color.PINK;
+   // Color yellow = Color.YELLOW;   
+
+
+       // centre of the figure ........ 
+
+       int Centrex=0;
+       int Centrey=0;
+      int  Centrez=0;
+       int centrex2d=0;
+       int centrey2d=0;
+       int centrez2d=0;
+
+      int scrheight=0;
+       int scrwidth=0;
+
+       int plotax;
+       int plotay;
+       int plotbx;
+       int plotby;
+       int plotcx;
+       int plotcy;
+       int plotdx;
+       int plotdy;
+       int plotex;
+       int plotey;
+       int plotfx;
+       int plotfy;
+       int plotgx;
+       int plotgy;
+       int plothx;
+       int plothy; 
+       int plotperpdx;
+       int plotperpdy;
+
+
+
+
+    //plane passing through ABCD.......
+    int v1v3[]= new int[3];
+        int v1v2[]= new int[3];
+
+        //for face FEAB......
+        int v3v7[]= new int[3];
+        int v3v4[]= new int[3];
+
+        //FOR FACE FBDH..........
+        int v5v7[]= new int[3];
+        int v5v1[]= new int[3];
+
+        //FOR FACE HGCD............
+        int v1v5[]= new int[3];
+      //  int v1v2[]={v2[0]-v1[0],v2[1]-v1[1],v2[2]-v1[2]}; NEEDED IN THIS FACE ALSO AS ABCD
+
+        // FOR FACE EACG.........
+        int v6v2[]= new int[3];
+        int v6v8[]= new int[3];
+
+        // FOR FACE FEGH............
+      //  int v5V7[]={v7[0]-v5[0],v7[1]-v5[1],v7[2]-v5[2]}; NEEDED IN THIS FACE ALSO AS FBDH
+        int v5v6[]= new int[3];
+
+      public void calculateThreepointsofFace()
+    {
+
+        //for face ABCD.......
+        v1v3[0]=v3[0]-v1[0];
+        v1v3[1]=v3[1]-v1[1];
+        v1v3[2]=v3[2]-v1[2];
+
+        v1v2[0]=v2[0]-v1[0];
+        v1v2[1]= v2[1]-v1[1];
+        v1v2[2]=v2[2]-v1[2];
+
+        //for face FEAB......
+        v3v7[0]=v7[0]-v3[0];
+        v3v7[1]=v7[1]-v3[1];
+        v3v7[2]=v7[2]-v3[2];
+
+        v3v4[0]=v4[0]-v3[0];
+        v3v4[1]=v4[1]-v3[1];
+        v3v4[2]=v4[2]-v3[2];
+
+
+
+        //FOR FACE FBDH..........
+       // int v5V7[]={v7[0]-v5[0],v7[1]-v5[1],v7[2]-v5[2]};
+       // int v5V1[]={v1[0]-v5[0],v1[1]-v5[1],v1[2]-v5[2]};
+        v5v7[0]=v7[0]-v5[0];
+        v5v7[1]=v7[1]-v5[1];
+        v5v7[2]=v7[2]-v5[2];
+
+        v5v1[0]=v1[0]-v5[0];
+        v5v1[1]=v1[1]-v5[1];
+        v5v1[2]=v1[2]-v5[2];
+
+        //FOR FACE HGCD............
+      //  int v1v5[]={v5[0]-v1[0],v5[1]-v1[1],v5[2]-v1[2]};
+      //  int v1v2[]={v2[0]-v1[0],v2[1]-v1[1],v2[2]-v1[2]}; NEEDED IN THIS FACE ALSO AS ABCD
+        v1v5[0]=v5[0]-v1[0];
+        v1v5[1]=v5[1]-v1[1];
+        v1v5[2]=v5[2]-v1[2];
+
+        // FOR FACE EACG.........
+      //  int v6v2[]={v2[0]-v6[0],v2[1]-v6[1],v2[2]-v6[2]};
+      //  int v6v8[]={v8[0]-v6[0],v8[1]-v6[1],v8[2]-v6[2]};
+
+        v6v2[0]=v2[0]-v6[0];
+        v6v2[1]=v2[1]-v6[1];
+        v6v2[2]=v2[2]-v6[2];
+
+        v6v8[0]=v8[0]-v6[0];
+        v6v8[1]=v8[1]-v6[1];
+        v6v8[2]=v8[2]-v6[2];
+
+        // FOR FACE FEGH............
+      //  int v5V7[]={v7[0]-v5[0],v7[1]-v5[1],v7[2]-v5[2]}; NEEDED IN THIS FACE ALSO AS FBDH
+      //  int v5v6[]={v6[0]-v5[0],v6[1]-v5[1],v6[2]-v5[2]};
+
+        v5v6[0]=v6[0]-v5[0];
+        v5v6[1]=v6[1]-v5[1];
+        v5v6[2]=v6[2]-v5[2];
+    }
+
+    //NORMAL VECTORS.......
+ //  public void calculateNormalvectors()
+ //  { 
+    public void calculateAngles()
+    {
+    int nBACD[]= {v1v3[1]*v1v2[2]-v1v3[2]*v1v2[1],-(v1v3[0]*v1v2[2]-v1v3[2]*v1v2[0]),v1v3[0]*v1v2[1]-v1v3[1]*v1v2[0]};
+    int nFEAB[]= {v3v7[1]*v3v4[2]-v3v7[2]*v3v4[1],-(v3v7[0]*v3v4[2]-v3v7[2]*v3v4[0]),v3v7[0]*v3v4[1]-v3v7[1]*v3v4[0]};
+    int nFBDH[]= {v5v7[1]*v5v1[2]-v5v7[2]*v5v1[1],-(v5v7[0]*v5v1[2]-v5v7[2]*v5v1[0]),v5v7[0]*v5v1[1]-v5v7[1]*v5v1[0]}; 
+    int nHGCD[]= {v1v5[1]*v1v2[2]-v1v5[2]*v1v2[1],-(v1v5[0]*v1v2[2]-v1v5[2]*v1v2[0]),v1v5[0]*v1v2[1]-v1v5[1]*v1v2[0]};
+    int nEACG[]= {v6v2[1]*v6v8[2]-v6v2[2]*v6v8[1],-(v6v2[0]*v6v8[2]-v6v2[2]*v6v8[0]),v6v2[0]*v6v8[1]-v6v2[1]*v6v8[0]};
+    int nFEGH[]= {v5v7[1]*v5v6[2]-v5v7[2]*v5v6[1],-(v5v7[0]*v5v6[2]-v5v7[2]*v5v6[0]),v5v7[0]*v5v6[1]-v5v7[1]*v5v6[0]};
+ //  }
+
+ //  public void calculateSourcevectors()
+ //  {
+       int vecsBACD[]={midbacd[0]-s[0],midbacd[1]-s[1],midbacd[2]-s[2],};   // vector source to face BACD.........
+       int vecsFEAB[]={midfeab[0]-s[0],midfeab[1]-s[1],midfeab[2]-s[2],};
+       int vecsFBDH[]={midfbdh[0]-s[0],midfbdh[1]-s[1],midfbdh[2]-s[2],};
+       int vecsHGCD[]={midhgcd[0]-s[0],midhgcd[1]-s[1],midhgcd[2]-s[2],};
+       int vecsEACG[]={mideacg[0]-s[0],mideacg[1]-s[1],mideacg[2]-s[2],};
+       int vecsFEGH[]={midfegh[0]-s[0],midfegh[1]-s[1],midfegh[2]-s[2],};
+ //  }
+
+ //  public void calculateAngleSN()
+ //  {
+       double angBACDSN=(vecsBACD[0]*nBACD[0]+vecsBACD[1]*nBACD[1]+vecsBACD[2]*nBACD[2])/((Math.sqrt(vecsBACD[0]*vecsBACD[0]+vecsBACD[1]*vecsBACD[1]+vecsBACD[2]*vecsBACD[2])*Math.sqrt(nBACD[0]*nBACD[0]+nBACD[1]*nBACD[1]+nBACD[2]*nBACD[2])));
+       double angFEABSN=(vecsFEAB[0]*nFEAB[0]+vecsFEAB[1]*nFEAB[1]+vecsFEAB[2]*nFEAB[2])/((Math.sqrt(vecsFEAB[0]*vecsFEAB[0]+vecsFEAB[1]*vecsFEAB[1]+vecsFEAB[2]*vecsFEAB[2])*Math.sqrt(nFEAB[0]*nFEAB[0]+nFEAB[1]*nFEAB[1]+nFEAB[2]*nFEAB[2]))); 
+       double angFBDHSN=(vecsFBDH[0]*nFBDH[0]+vecsFBDH[1]*nFBDH[1]+vecsFBDH[2]*nFBDH[2])/((Math.sqrt(vecsFBDH[0]*vecsFBDH[0]+vecsFBDH[1]*vecsFBDH[1]+vecsFBDH[2]*vecsFBDH[2])*Math.sqrt(nFBDH[0]*nFBDH[0]+nFBDH[1]*nFBDH[1]+nFBDH[2]*nFBDH[2])));
+       double angHGCDSN=(vecsHGCD[0]*nHGCD[0]+vecsHGCD[1]*nHGCD[1]+vecsHGCD[2]*nHGCD[2])/((Math.sqrt(vecsHGCD[0]*vecsHGCD[0]+vecsHGCD[1]*vecsHGCD[1]+vecsHGCD[2]*vecsHGCD[2])*Math.sqrt(nHGCD[0]*nHGCD[0]+nHGCD[1]*nHGCD[1]+nHGCD[2]*nHGCD[2])));
+       double angEACGSN=(vecsEACG[0]*nEACG[0]+vecsEACG[1]*nEACG[1]+vecsEACG[2]*nEACG[2])/((Math.sqrt(vecsEACG[0]*vecsEACG[0]+vecsEACG[1]*vecsEACG[1]+vecsEACG[2]*vecsEACG[2])*Math.sqrt(nEACG[0]*nEACG[0]+nEACG[1]*nEACG[1]+nEACG[2]*nEACG[2])));
+       double angFEGHSN=(vecsFEGH[0]*nFEGH[0]+vecsFEGH[1]*nFEGH[1]+vecsFEGH[2]*nFEGH[2])/((Math.sqrt(vecsFEGH[0]*vecsFEGH[0]+vecsFEGH[1]*vecsFEGH[1]+vecsFEGH[2]*vecsFEGH[2])*Math.sqrt(nFEGH[0]*nFEGH[0]+nFEGH[1]*nFEGH[1]+nFEGH[2]*nFEGH[2])));
+       System.out.println("angSNBACD" +angBACDSN);
+       System.out.println("SNFEAB" +angFEABSN);
+       System.out.println("SNFBDH" +angFBDHSN);
+       System.out.println("SNHGCD" +angHGCDSN);
+       System.out.println("SNEACG" +angEACGSN);
+       System.out.println("SNFEGH" +angFEGHSN);
+
+
+ //  public void calculateCameravectors()
+
+       int veccBACD[]={midbacd[0]-c[0],midbacd[1]-c[1],midbacd[2]-c[2],};
+       int veccFEAB[]={midfeab[0]-c[0],midfeab[1]-c[1],midfeab[2]-c[2],};
+       int veccFBDH[]={midfbdh[0]-c[0],midfbdh[1]-c[1],midfbdh[2]-c[2],};
+       int veccHGCD[]={midhgcd[0]-c[0],midhgcd[1]-c[1],midhgcd[2]-c[2],};
+       int veccEACG[]={mideacg[0]-c[0],mideacg[1]-c[1],mideacg[2]-c[2],};
+       int veccFEGH[]={midfegh[0]-c[0],midfegh[1]-c[1],midfegh[2]-c[2],};
+
+  //     public void calculateAngleCN()
+ //  {
+       double angBACDCN=(veccBACD[0]*nBACD[0]+veccBACD[1]*nBACD[1]+veccBACD[2]*nBACD[2])/((Math.sqrt(veccBACD[0]*veccBACD[0]+veccBACD[1]*veccBACD[1]+veccBACD[2]*veccBACD[2])*Math.sqrt(nBACD[0]*nBACD[0]+nBACD[1]*nBACD[1]+nBACD[2]*nBACD[2])));
+       double angFEABCN=(veccFEAB[0]*nFEAB[0]+veccFEAB[1]*nFEAB[1]+veccFEAB[2]*nFEAB[2])/((Math.sqrt(veccFEAB[0]*veccFEAB[0]+veccFEAB[1]*veccFEAB[1]+veccFEAB[2]*veccFEAB[2])*Math.sqrt(nFEAB[0]*nFEAB[0]+nFEAB[1]*nFEAB[1]+nFEAB[2]*nFEAB[2]))); 
+       double angFBDHCN=(veccFBDH[0]*nFBDH[0]+veccFBDH[1]*nFBDH[1]+veccFBDH[2]*nFBDH[2])/((Math.sqrt(veccFBDH[0]*veccFBDH[0]+veccFBDH[1]*veccFBDH[1]+veccFBDH[2]*veccFBDH[2])*Math.sqrt(nFBDH[0]*nFBDH[0]+nFBDH[1]*nFBDH[1]+nFBDH[2]*nFBDH[2])));
+       double angHGCDCN=(veccHGCD[0]*nHGCD[0]+veccHGCD[1]*nHGCD[1]+veccHGCD[2]*nHGCD[2])/((Math.sqrt(veccHGCD[0]*veccHGCD[0]+veccHGCD[1]*veccHGCD[1]+veccHGCD[2]*veccHGCD[2])*Math.sqrt(nHGCD[0]*nHGCD[0]+nHGCD[1]*nHGCD[1]+nHGCD[2]*nHGCD[2])));
+       double angEACGCN=(veccEACG[0]*nEACG[0]+veccEACG[1]*nEACG[1]+veccEACG[2]*nEACG[2])/((Math.sqrt(veccEACG[0]*veccEACG[0]+veccEACG[1]*veccEACG[1]+veccEACG[2]*veccEACG[2])*Math.sqrt(nEACG[0]*nEACG[0]+nEACG[1]*nEACG[1]+nEACG[2]*nEACG[2])));
+       double angFEGHCN=(veccFEGH[0]*nFEGH[0]+veccFEGH[1]*nFEGH[1]+veccFEGH[2]*nFEGH[2])/((Math.sqrt(veccFEGH[0]*veccFEGH[0]+veccFEGH[1]*veccFEGH[1]+veccFEGH[2]*veccFEGH[2])*Math.sqrt(nFEGH[0]*nFEGH[0]+nFEGH[1]*nFEGH[1]+nFEGH[2]*nFEGH[2])));
+       
+       System.out.println("angCNBACD" +angBACDCN);
+       System.out.println("CNFEAB" +angFEABCN);
+       System.out.println("CNFBDH" +angFBDHCN);
+       System.out.println("CNHGCD" +angHGCDCN);
+       System.out.println("CNEACG" +angEACGCN);
+       System.out.println("CNFEGH" +angFEGHCN);
+    // Reflected ray vector for each face.........
+
+       // SOURCE MODULO for EACH face.....
+      double sBACDmod=Math.sqrt(vecsBACD[0]*vecsBACD[0]+vecsBACD[1]*vecsBACD[1]+vecsBACD[2]*vecsBACD[2]);
+      double sFEABmod=Math.sqrt(vecsFEAB[0]*vecsFEAB[0]+vecsFEAB[1]*vecsFEAB[1]+vecsFEAB[2]*vecsFEAB[2]);
+      double sFBDHmod=Math.sqrt(vecsFBDH[0]*vecsFBDH[0]+vecsFBDH[1]*vecsFBDH[1]+vecsFBDH[2]*vecsFBDH[2]);
+      double sHGCDmod=Math.sqrt(vecsHGCD[0]*vecsHGCD[0]+vecsHGCD[1]*vecsHGCD[1]+vecsHGCD[2]*vecsHGCD[2]);
+      double sEACGmod=Math.sqrt(vecsEACG[0]*vecsEACG[0]+vecsEACG[1]*vecsEACG[1]+vecsEACG[2]*vecsEACG[2]);
+      double sFEGHmod=Math.sqrt(vecsFEGH[0]*vecsFEGH[0]+vecsFEGH[1]*vecsFEGH[1]+vecsFEGH[2]*vecsFEGH[2]);
+
+      // NORMAL MODULO for EACH face.....
+      double nBACDmod=Math.sqrt(nBACD[0]*nBACD[0]+nBACD[1]*nBACD[1]+nBACD[2]*nBACD[2]);
+      double nFEABmod=Math.sqrt(nFEAB[0]*nFEAB[0]+nFEAB[1]*nFEAB[1]+nFEAB[2]*nFEAB[2]);
+      double nFBDHmod=Math.sqrt(nFBDH[0]*nFBDH[0]+nFBDH[1]*nFBDH[1]+nFBDH[2]*nFBDH[2]);
+      double nHGCDmod=Math.sqrt(nHGCD[0]*nHGCD[0]+nHGCD[1]*nHGCD[1]+nHGCD[2]*nHGCD[2]);
+      double nEACGmod=Math.sqrt(nEACG[0]*nEACG[0]+nEACG[1]*nEACG[1]+nEACG[2]*nEACG[2]);
+      double nFEGHmod=Math.sqrt(nFEGH[0]*nFEGH[0]+nFEGH[1]*nFEGH[1]+nFEGH[2]*nFEGH[2]);
+    // double   vecrBACD[]={vecsBACD[0]/Math.sqrt(vecsBACD[0]*vecsBACD[0]+vecsBACD[1]*vecsBACD[1]+vecsBACD[2]*vecsBACD[2])};
+
+    // reflected ray vector for BACD face.....  
+    double   vecrBACD[]={(vecsBACD[0]/sBACDmod)-(2*angBACDSN*nBACD[0]/nBACDmod),(vecsBACD[1]/sBACDmod)-(2*angBACDSN*nBACD[1]/nBACDmod),(vecsBACD[2]/sBACDmod)-(2*angBACDSN*nBACD[2]/nBACDmod)};
+    double   vecrFEAB[]={(vecsFEAB[0]/sFEABmod)-(2*angFEABSN*nFEAB[0]/nFEABmod),(vecsFEAB[1]/sFEABmod)-(2*angFEABSN*nFEAB[1]/nFEABmod),(vecsFEAB[2]/sFEABmod)-(2*angFEABSN*nFEAB[2]/nFEABmod)};
+    double   vecrFBDH[]={(vecsFBDH[0]/sFBDHmod)-(2*angFBDHSN*nFBDH[0]/nFBDHmod),(vecsFBDH[1]/sFBDHmod)-(2*angFBDHSN*nFBDH[1]/nFBDHmod),(vecsFBDH[2]/sFBDHmod)-(2*angFBDHSN*nFBDH[2]/nFBDHmod)};
+    double   vecrHGCD[]={(vecsHGCD[0]/sHGCDmod)-(2*angHGCDSN*nHGCD[0]/nHGCDmod),(vecsHGCD[1]/sHGCDmod)-(2*angHGCDSN*nHGCD[1]/nHGCDmod),(vecsHGCD[2]/sHGCDmod)-(2*angHGCDSN*nHGCD[2]/nHGCDmod)};
+    double   vecrEACG[]={(vecsEACG[0]/sEACGmod)-(2*angEACGSN*nEACG[0]/nEACGmod),(vecsEACG[1]/sEACGmod)-(2*angEACGSN*nEACG[1]/nEACGmod),(vecsEACG[2]/sEACGmod)-(2*angEACGSN*nEACG[2]/nEACGmod)};
+    double   vecrFEGH[]={(vecsFEGH[0]/sFEGHmod)-(2*angFEGHSN*nFEGH[0]/nFEGHmod),(vecsFEGH[1]/sFEGHmod)-(2*angFEGHSN*nFEGH[1]/nFEGHmod),(vecsFEGH[2]/sFEGHmod)-(2*angFEGHSN*nFEGH[2]/nFEGHmod)};
+
+    // MODULO OF REFLECTED RAYS FOR EACH FACE........
+    double rBACDmod=Math.sqrt(vecrBACD[0]*vecrBACD[0]+vecrBACD[1]*vecrBACD[1]+vecrBACD[2]*vecrBACD[2]);
+    double rFEABmod=Math.sqrt(vecrFEAB[0]*vecrFEAB[0]+vecrFEAB[1]*vecrFEAB[1]+vecrFEAB[2]*vecrFEAB[2]);
+    double rFBDHmod=Math.sqrt(vecrFBDH[0]*vecrFBDH[0]+vecrFBDH[1]*vecrFBDH[1]+vecrFBDH[2]*vecrFBDH[2]);
+    double rHGCDmod=Math.sqrt(vecrHGCD[0]*vecrHGCD[0]+vecrHGCD[1]*vecrHGCD[1]+vecrHGCD[2]*vecrHGCD[2]);
+    double rEACGmod=Math.sqrt(vecrEACG[0]*vecrEACG[0]+vecrEACG[1]*vecrEACG[1]+vecrEACG[2]*vecrEACG[2]);
+    double rFEGHmod=Math.sqrt(vecrFEGH[0]*vecrFEGH[0]+vecrFEGH[1]*vecrFEGH[1]+vecrFEGH[2]*vecrFEGH[2]);
+
+    // MODULO OF CAMERA VECTOR FOR EACH FACE........
+    double cBACDmod=Math.sqrt(veccBACD[0]*veccBACD[0]+veccBACD[1]*veccBACD[1]+veccBACD[2]*veccBACD[2]);
+    double cFEABmod=Math.sqrt(veccFEAB[0]*veccFEAB[0]+veccFEAB[1]*veccFEAB[1]+veccFEAB[2]*veccFEAB[2]);
+    double cFBDHmod=Math.sqrt(veccFBDH[0]*veccFBDH[0]+veccFBDH[1]*veccFBDH[1]+veccFBDH[2]*veccFBDH[2]);
+    double cHGCDmod=Math.sqrt(veccHGCD[0]*veccHGCD[0]+veccHGCD[1]*veccHGCD[1]+veccHGCD[2]*veccHGCD[2]);
+    double cEACGmod=Math.sqrt(veccEACG[0]*veccEACG[0]+veccEACG[1]*veccEACG[1]+veccEACG[2]*veccEACG[2]);
+    double cFEGHmod=Math.sqrt(veccFEGH[0]*veccFEGH[0]+veccFEGH[1]*veccFEGH[1]+veccFEGH[2]*veccFEGH[2]);
+
+    //ANGLE BETWEEN REFLECTED RAY AND CAMERA VECTORS FOR EACH FACE......
+    double angBACDRC=(vecrBACD[0]*veccBACD[0]+vecrBACD[1]*veccBACD[1]+vecrBACD[2]*veccBACD[2])/(rBACDmod*cBACDmod);
+    double angFEABRC=(vecrFEAB[0]*veccFEAB[0]+vecrFEAB[1]*veccFEAB[1]+vecrFEAB[2]*veccFEAB[2])/(rFEABmod*cFEABmod);
+    double angFBDHRC=(vecrFBDH[0]*veccFBDH[0]+vecrFBDH[1]*veccFBDH[1]+vecrFBDH[2]*veccFBDH[2])/(rFBDHmod*cFBDHmod);
+    double angHGCDRC=(vecrHGCD[0]*veccHGCD[0]+vecrHGCD[1]*veccHGCD[1]+vecrHGCD[2]*veccHGCD[2])/(rHGCDmod*cHGCDmod);
+    double angEACGRC=(vecrEACG[0]*veccEACG[0]+vecrEACG[1]*veccEACG[1]+vecrEACG[2]*veccEACG[2])/(rEACGmod*cEACGmod);
+    double angFEGHRC=(vecrFEGH[0]*veccFEGH[0]+vecrFEGH[1]*veccFEGH[1]+vecrFEGH[2]*veccFEGH[2])/(rFEGHmod*cFEGHmod);
+
+    // INTENSITY CALCULATION.......FOR PHONG SHADING.........
+    double kd=0.6,ks=0.5,ka=0.5;
+    double Ls=0.3,Ld=0.24,La=0.1;
+
+    double intensityBACD =10*(kd*Ld*(angBACDSN)+ks*Ls*Math.pow(angBACDRC,1)+ka*La);
+    double intensityFEAB =10*(kd*Ld*(angFEABSN)+ks*Ls*Math.pow(angFEABRC,1)+ka*La);
+    double intensityFBDH =10*(kd*Ld*(angFBDHSN)+ks*Ls*Math.pow(angFBDHRC,1)+ka*La);
+    double intensityHGCD =10*(kd*Ld*(angHGCDSN)+ks*Ls*Math.pow(angHGCDRC,1)+ka*La);
+    double intensityEACG =10*(kd*Ld*(angEACGSN)+ks*Ls*Math.pow(angEACGRC,1)+ka*La);
+    double intensityFEGH =10*(kd*Ld*(angFEGHSN)+ks*Ls*Math.pow(angFEGHRC,1)+ka*La);
+
+        System.out.println("intensity value of BACD="+intensityBACD);
+        System.out.println("intensity value of intensityFEAB="+intensityFEAB);
+        System.out.println("intensity value of intensityFBDH="+intensityFBDH);
+        System.out.println("intensity value of intensityHGCD="+intensityHGCD);
+        System.out.println("intensity value of intensityEACG="+intensityEACG);
+        System.out.println("intensity value of intensityFEGH="+intensityFEGH);
+
+
+    double getredHGCD= redColor.getRed()+redColor.getRed()*intensityHGCD;
+       double getgreenHGCD= redColor.getGreen()+redColor.getGreen()*intensityHGCD;
+       double getblueHGCD= redColor.getBlue()+redColor.getBlue()*intensityHGCD;
+
+       if(getredHGCD>255)
+           getredHGCD=255;
+       if(getredHGCD<0)
+           getredHGCD=0;
+       if(getgreenHGCD>255)
+           getgreenHGCD=255;
+       if(getgreenHGCD<0)
+           getgreenHGCD=0;
+       if(getblueHGCD>255)
+           getblueHGCD=255;
+       if(getblueHGCD<0)
+           getblueHGCD=0;
+
+       redColor=new Color((int)getredHGCD,(int)getgreenHGCD,(int)getblueHGCD);
+
+       double getredFEGH= greenColor.getRed()+greenColor.getRed()*intensityFEGH;
+       double getgreenFEGH= greenColor.getGreen()+greenColor.getGreen()*intensityFEGH;
+       double getblueFEGH= greenColor.getBlue()+greenColor.getBlue()*intensityFEGH;
+
+       if(getredFEGH>255)
+           getredFEGH=255;
+       if(getredFEGH<0)
+           getredFEGH=0;
+       if(getgreenFEGH>255)
+           getgreenFEGH=255;
+       if(getgreenFEGH<0)
+           getgreenFEGH=0;
+       if(getblueFEGH>255)
+           getblueFEGH=255;
+       if(getblueFEGH<0)
+           getblueFEGH=0;
+       greenColor=new Color((int)getredFEGH,(int)getgreenFEGH,(int)getblueFEGH);
+
+       double getredBACD= blueColor.getRed()+blueColor.getRed()*intensityBACD;
+       double getgreenBACD= blueColor.getGreen()+blueColor.getGreen()*intensityBACD;
+       double getblueBACD= blueColor.getBlue()+blueColor.getBlue()*intensityBACD;
+
+       if(getredBACD>255)
+           getredBACD=255;
+       if(getredBACD<0)
+           getredBACD=0;
+       if(getgreenBACD>255)
+           getgreenBACD=255;
+       if(getgreenBACD<0)
+           getgreenBACD=0;
+       if(getblueBACD>255)
+           getblueBACD=255;
+       if(getblueBACD<0)
+           getblueBACD=0;
+       blueColor=new Color((int)getredBACD,(int)getgreenBACD,(int)getblueBACD);
+
+       double getredFEAB= pinkColor.getRed()+pinkColor.getRed()*intensityFEAB;
+       double getgreenFEAB= pinkColor.getGreen()+pinkColor.getGreen()*intensityFEAB;
+       double getblueFEAB= pinkColor.getBlue()+pinkColor.getBlue()*intensityFEAB;
+
+       if(getredFEAB>255)
+           getredFEAB=255;
+       if(getredFEAB<0)
+           getredFEAB=0;
+       if(getgreenFEAB>255)
+           getgreenFEAB=255;
+       if(getgreenFEAB<0)
+           getgreenFEAB=0;
+       if(getblueFEAB>255)
+           getblueFEAB=255;
+       if(getblueFEAB<0)
+           getblueFEAB=0;
+       pinkColor=new Color((int)getredFEAB,(int)getgreenFEAB,(int)getblueFEAB);
+
+       double getredFBDH= yellowColor.getRed()+yellowColor.getRed()*intensityFBDH;
+       double getgreenFBDH= yellowColor.getGreen()+yellowColor.getGreen()*intensityFBDH;
+       double getblueFBDH= yellowColor.getBlue()+yellowColor.getBlue()*intensityFBDH;
+
+       if(getredFBDH>255)
+           getredFBDH=255;
+       if(getredFBDH<0)
+           getredFBDH=0;
+       if(getgreenFBDH>255)
+           getgreenFBDH=255;
+       if(getgreenFBDH<0)
+           getgreenFBDH=0;
+       if(getblueFBDH>255)
+           getblueFBDH=255;
+       if(getblueFBDH<0)
+           getblueFBDH=0;
+       yellowColor=new Color((int)getredFBDH,(int)getgreenFBDH,(int)getblueFBDH);
+
+       double getredEACG= blackColor.getRed()+blackColor.getRed()*intensityEACG;
+       double getgreenEACG= blackColor.getGreen()+blackColor.getGreen()*intensityEACG;
+       double getblueEACG= blackColor.getBlue()+blackColor.getBlue()*intensityEACG;
+
+       if(getredEACG>255)
+           getredEACG=255;
+       if(getredEACG<0)
+           getredEACG=0;
+       if(getgreenEACG>255)
+           getgreenEACG=255;
+       if(getgreenEACG<0)
+           getgreenEACG=0;
+       if(getblueEACG>255)
+           getblueEACG=255;
+       if(getblueEACG<0)
+           getblueEACG=0;
+       blackColor=new Color((int)getredEACG,(int)getgreenEACG,(int)getblueEACG);
+       System.out.println("intensity BACD after multiplication="+getblueBACD);
+       System.out.println("intensity BACD after multiplication="+getredHGCD);
+       System.out.println("intensity BACD after multiplication="+getgreenFEGH);
+
+    System.out.println("angBACDSN"+Math.acos(angBACDSN)*180/(Math.PI));
+    System.out.println("angFEABSN"+Math.acos(angFEABSN)*180/(Math.PI));
+    System.out.println("angFBDHSN"+Math.acos(angFBDHSN)*180/(Math.PI));
+    System.out.println("angHGCDSN"+Math.acos(angHGCDSN)*180/(Math.PI));
+    System.out.println("angEACGSN"+Math.acos(angEACGSN)*180/(Math.PI));
+    System.out.println("angFEGHSN"+Math.acos(angFEGHSN)*180/(Math.PI));
+
+
+
+    }
+
+
+
+
+
+
+    public void init() {
+        // TODO start asynchronous download of heavy resources
+
+    /*    int redRGB = blueColor.getRGB();    // TO GET RGB VALUE...........
+        System.out.println("RedRGB="+redRGB);
+
+        int getpink= yellow.getRed();
+        System.out.printf("red: %d, green: %d, blue: %d",
+        pinkColor.getRed(), pinkColor.getGreen(), pinkColor.getBlue());
+    */    
+	 //this.setSize(new Dimension(1000, 500));// APPLET SIZE........
+         this.resize(1400, 680);
+        button1 = new Button("Click to Rotate: alpha,beta,gamma angles");
+		add(button1);
+		button1.addActionListener(this);
+		
+		button2 = new Button("Reset");
+		add(button2);
+		button2.addActionListener(this);
+		button3 = new Button("Camera Picture");
+		add(button3);
+		button3.addActionListener(this);
+
+                button4 = new Button("START LIGHTING....");
+		add(button4);
+		button4.addActionListener(this);
+		box1=new TextField("0");   
+		box2=new TextField("0");   
+		box3=new TextField("0");   
+                button5 = new Button("START SHADING");
+		add(button5);
+		button5.addActionListener(this);
+		add(box1);
+		add(box2);
+		add(box3);
+
+    }
+
+    int degx=0;
+    int degy=0;
+    int degz=0;
+
+	public void actionPerformed(ActionEvent ev) {
+		if (ev.getSource() == button1) 
+                {
+			    anglealpha=Integer.parseInt(box1.getText());
+			    anglebeta=Integer.parseInt(box2.getText());
+			    anglegamma=Integer.parseInt(box3.getText());
+			
+			  alpha=Math.toRadians(anglealpha);
+                          beta=Math.toRadians(anglebeta);
+                          gamma=Math.toRadians(anglegamma);
+		       System.out.println(anglealpha+" "+alpha+" "+anglebeta+" "+beta+" "+anglegamma+" "+gamma);
+		
+		       cx=Math.cos(alpha);
+		        sx=Math.sin(alpha);
+		
+		        cy=Math.cos(beta);
+		        sy=Math.sin(beta);
+		
+		        cz=Math.cos(gamma);
+		        sz=Math.sin(gamma);
+		
+		        /*rotation in x,y,z and translation*/
+
+		        System.out.println("cx="+cx);
+                System.out.println("cy="+cy);
+                System.out.println("sx="+sx);
+                System.out.println("sy="+sy);
+                System.out.println("cz="+cz);
+                System.out.println("sz="+sz);
+		
+		        System.out.println("new V1[x]="+v1[0]);
+                System.out.println("new V1[x]="+v1[1]);
+                System.out.println("new V1[x]="+v1[2]);
+                System.out.println("new V2[x]="+v2[0]);
+                System.out.println("new V1[x]="+v2[1]);
+                System.out.println("new V1[x]="+v2[2]);
+                System.out.println("new V4[x]="+v4[0]);
+                System.out.println("new V1[x]="+v4[1]);
+                System.out.println("new V1[x]="+v4[2]);
+                System.out.println("new V3[x]="+v3[0]);
+                System.out.println("new V1[x]="+v3[1]);
+                System.out.println("new V1[x]="+v3[2]);
+                System.out.println("new V5[x]="+v5[0]);
+                System.out.println("new V1[x]="+v5[1]);
+                System.out.println("new V1[x]="+v5[2]);
+                System.out.println("new V6[x]="+v6[0]);
+                System.out.println("new V1[x]="+v6[1]);
+                System.out.println("new V1[x]="+v6[2]);
+                System.out.println("new V7[x]="+v7[0]);
+                System.out.println("new V1[x]="+v7[1]);
+                System.out.println("new V1[x]="+v7[2]);
+                System.out.println("new v8[x]="+v8[0]);
+                System.out.println("new V1[x]="+v8[1]);
+                System.out.println("new V1[x]="+v8[2]);
+		
+		
+		        System.out.println("cy*cz="+cy*cz);
+		        System.out.println("-cy*sz="+-cy*sz);
+		        System.out.println("sy="+sy);
+		        System.out.println("cy*(-Centrex*cz+Centrey*sz)-sy*Centrez+Centrex="+(cy*(-Centrex*cz+Centrey*sz)-sy*Centrez+Centrex));
+		
+		        System.out.println("(sx*sy*cz+cx*sz)="+(sx*sy*cz+cx*sz));
+		        System.out.println("Math.round(-sx*sy*sz+cx*cz)="+-sx*sy*sz+cx*cz);
+		        System.out.println("(-sx*cy)="+(-sx*cy));
+		        System.out.println("cx*(-Centrex*sz-Centrey*cz)-sx*(-sy*(-Centrex*cz+Centrey*sz)-cy*Centrez)+Centrey="+(cx*(-Centrex*sz-Centrey*cz)-sx*(-sy*(-Centrex*cz+Centrey*sz)-cy*Centrez)+Centrey));
+		
+		        System.out.println("(sx*sz-sy*cx*cz)="+(sx*sz-sy*cx*cz));
+		        System.out.println("(sx*cz+cx*sy*sz)="+(sx*cz+cx*sy*sz));
+		        System.out.println("cx*cy="+cx*cy);
+		        System.out.println("sx*(-Centrex*sz-Centrey*cz)+cx*(-sy*(-Centrex*cz+Centrey*sz)-cy*Centrez)+Centrez="+(sx*(-Centrex*sz-Centrey*cz)+cx*(-sy*(-Centrex*cz+Centrey*sz)-cy*Centrez)+Centrez));
+		
+		
+		        v1dash[0]=(int)(v1[0]*(cy*cz)+v1[1]*(-cy*sz)+v1[2]*(sy)+(cy*(-Centrex*cz+Centrey*sz)-sy*Centrez)+Centrex);
+	            v1dash[1]=(int)(v1[0]*(sx*sy*cz+cx*sz)+v1[1]*(-sx*sy*sz+cx*cz)+v1[2]*(-sx*cy)+(cx*(-Centrex*sz-Centrey*cz)-sx*(-sy*(-Centrex*cz+Centrey*sz)-cy*Centrez)+Centrey));
+	            v1dash[2]=(int)(v1[0]*(sx*sz-sy*cx*cz)+v1[1]*(sx*cz+cx*sy*sz)+v1[2]*(cx*cy)+(sx*(-Centrex*sz-Centrey*cz))+(cx*(-sy*(-Centrex*cz+Centrey*sz)-cy*Centrez)+Centrez));
+	
+
+
+              v2dash[0]=(int)(v2[0]*(cy*cz)+v2[1]*(-cy*sz)+v2[2]*(sy)+(cy*(-Centrex*cz+Centrey*sz)-sy*Centrez)+Centrex);
+              v2dash[1]=(int)(v2[0]*(sx*sy*cz+cx*sz)+v2[1]*(-sx*sy*sz+cx*cz)+v2[2]*(-sx*cy)+(cx*(-Centrex*sz-Centrey*cz)-sx*(-sy*(-Centrex*cz+Centrey*sz)-cy*Centrez)+Centrey));
+              v2dash[2]=(int)(v2[0]*(sx*sz-sy*cx*cz)+v2[1]*(sx*cz+cx*sy*sz)+v2[2]*(cx*cy)+(sx*(-Centrex*sz-Centrey*cz))+(cx*(-sy*(-Centrex*cz+Centrey*sz)-cy*Centrez)+Centrez));
+
+
+              v3dash[0]=(int)(v3[0]*(cy*cz)+v3[1]*(-cy*sz)+v3[2]*(sy)+(cy*(-Centrex*cz+Centrey*sz)-sy*Centrez)+Centrex);
+              v3dash[1]=(int)(v3[0]*(sx*sy*cz+cx*sz)+v3[1]*(-sx*sy*sz+cx*cz)+v3[2]*(-sx*cy)+(cx*(-Centrex*sz-Centrey*cz)-sx*(-sy*(-Centrex*cz+Centrey*sz)-cy*Centrez)+Centrey));
+              v3dash[2]=(int)(v3[0]*(sx*sz-sy*cx*cz)+v3[1]*(sx*cz+cx*sy*sz)+v3[2]*(cx*cy)+(sx*(-Centrex*sz-Centrey*cz))+(cx*(-sy*(-Centrex*cz+Centrey*sz)-cy*Centrez)+Centrez));
+
+
+              v4dash[0]=(int)(v4[0]*(cy*cz)+v4[1]*(-cy*sz)+v4[2]*(sy)+(cy*(-Centrex*cz+Centrey*sz)-sy*Centrez)+Centrex);
+              v4dash[1]=(int)(v4[0]*(sx*sy*cz+cx*sz)+v4[1]*(-sx*sy*sz+cx*cz)+v4[2]*(-sx*cy)+(cx*(-Centrex*sz-Centrey*cz)-sx*(-sy*(-Centrex*cz+Centrey*sz)-cy*Centrez)+Centrey));
+              v4dash[2]=(int)(v4[0]*(sx*sz-sy*cx*cz)+v4[1]*(sx*cz+cx*sy*sz)+v4[2]*(cx*cy)+(sx*(-Centrex*sz-Centrey*cz))+(cx*(-sy*(-Centrex*cz+Centrey*sz)-cy*Centrez)+Centrez));
+
+
+              v5dash[0]=(int)(v5[0]*(cy*cz)+v5[1]*(-cy*sz)+v5[2]*(sy)+(cy*(-Centrex*cz+Centrey*sz)-sy*Centrez)+Centrex);
+              v5dash[1]=(int)(v5[0]*(sx*sy*cz+cx*sz)+v5[1]*(-sx*sy*sz+cx*cz)+v5[2]*(-sx*cy)+(cx*(-Centrex*sz-Centrey*cz)-sx*(-sy*(-Centrex*cz+Centrey*sz)-cy*Centrez)+Centrey));
+              v5dash[2]=(int)(v5[0]*(sx*sz-sy*cx*cz)+v5[1]*(sx*cz+cx*sy*sz)+v5[2]*(cx*cy)+(sx*(-Centrex*sz-Centrey*cz))+(cx*(-sy*(-Centrex*cz+Centrey*sz)-cy*Centrez)+Centrez));
+
+
+              v6dash[0]=(int)(v6[0]*(cy*cz)+v6[1]*(-cy*sz)+v6[2]*(sy)+(cy*(-Centrex*cz+Centrey*sz)-sy*Centrez)+Centrex);
+              v6dash[1]=(int)(v6[0]*(sx*sy*cz+cx*sz)+v6[1]*(-sx*sy*sz+cx*cz)+v6[2]*(-sx*cy)+(cx*(-Centrex*sz-Centrey*cz)-sx*(-sy*(-Centrex*cz+Centrey*sz)-cy*Centrez)+Centrey));
+              v6dash[2]=(int)(v6[0]*(sx*sz-sy*cx*cz)+v6[1]*(sx*cz+cx*sy*sz)+v6[2]*(cx*cy)+(sx*(-Centrex*sz-Centrey*cz))+(cx*(-sy*(-Centrex*cz+Centrey*sz)-cy*Centrez)+Centrez));
+
+
+              v7dash[0]=(int)(v7[0]*(cy*cz)+v7[1]*(-cy*sz)+v7[2]*(sy)+(cy*(-Centrex*cz+Centrey*sz)-sy*Centrez)+Centrex);
+              v7dash[1]=(int)(v7[0]*(sx*sy*cz+cx*sz)+v7[1]*(-sx*sy*sz+cx*cz)+v7[2]*(-sx*cy)+(cx*(-Centrex*sz-Centrey*cz)-sx*(-sy*(-Centrex*cz+Centrey*sz)-cy*Centrez)+Centrey));
+              v7dash[2]=(int)(v7[0]*(sx*sz-sy*cx*cz)+v7[1]*(sx*cz+cx*sy*sz)+v7[2]*(cx*cy)+(sx*(-Centrex*sz-Centrey*cz))+(cx*(-sy*(-Centrex*cz+Centrey*sz)-cy*Centrez)+Centrez));
+
+              v8dash[0]=(int)(v8[0]*(cy*cz)+v8[1]*(-cy*sz)+v8[2]*(sy)+(cy*(-Centrex*cz+Centrey*sz)-sy*Centrez)+Centrex);
+              v8dash[1]=(int)(v8[0]*(sx*sy*cz+cx*sz)+v8[1]*(-sx*sy*sz+cx*cz)+v8[2]*(-sx*cy)+(cx*(-Centrex*sz-Centrey*cz)-sx*(-sy*(-Centrex*cz+Centrey*sz)-cy*Centrez)+Centrey));
+              v8dash[2]=(int)(v8[0]*(sx*sz-sy*cx*cz)+v8[1]*(sx*cz+cx*sy*sz)+v8[2]*(cx*cy)+(sx*(-Centrex*sz-Centrey*cz))+(cx*(-sy*(-Centrex*cz+Centrey*sz)-cy*Centrez)+Centrez));
+
+                perp[0]=(int)(perp[0]*cy*cz-perp[1]*cy*sz+perp[2]*sy-Centrex*cy*cz+Centrey*cy*sz+Centrex*sy*sz-Centrey*sy*cz);
+                perp[1]=(int)(perp[0]*(cx*sz-cz*sx*sy)+perp[1]*(cx*cz-sx*sy*sz)-perp[2]*sx*sy-cx*Centrex*sz-cx*Centrey*cz-sx*sy*Centrex*cz+sx*sy*Centrey*sz+sx*cy*Centrez);
+                perp[2]=(int)(perp[0]*(sx*sz-cx*cz*sy)+perp[1]*(sx*cz+cx*sy*sz)+perp[2]*cx*cy-sx*Centrex*sz-sx*Centrey*cz+cx*sy*Centrex*cz-cx*sy*Centrey*sz-cx*cy*Centrez);
+
+		
+
+
+                   System.out.println("new V1[x]="+v1dash[0]);
+                   System.out.println("new V1[x]="+v1dash[1]);
+                   System.out.println("new V1[x]="+v1dash[2]);
+                   System.out.println("new V2[x]="+v2dash[0]);
+                   System.out.println("new V1[x]="+v2dash[1]);
+                   System.out.println("new V1[x]="+v2dash[2]);
+                   System.out.println("new V4[x]="+v4dash[0]);
+                   System.out.println("new V1[x]="+v4dash[1]);
+                   System.out.println("new V1[x]="+v4dash[2]);
+                   System.out.println("new V3[x]="+v3dash[0]);
+                   System.out.println("new V1[x]="+v3dash[1]);
+                   System.out.println("new V1[x]="+v3dash[2]);
+                   System.out.println("new V5[x]="+v5dash[0]);
+                   System.out.println("new V1[x]="+v5dash[1]);
+                   System.out.println("new V1[x]="+v5dash[2]);
+                   System.out.println("new V6[x]="+v6dash[0]);
+                   System.out.println("new V1[x]="+v6dash[1]);
+                   System.out.println("new V1[x]="+v6dash[2]);
+                   System.out.println("new V7[x]="+v7dash[0]);
+                   System.out.println("new V1[x]="+v7dash[1]);
+                   System.out.println("new V1[x]="+v7dash[2]);
+                   System.out.println("new v8[x]="+v8dash[0]);
+                   System.out.println("new V1[x]="+v8dash[1]);
+                   System.out.println("new V1[x]="+v8dash[2]);
+
+
+
+
+                    v1[0]=v1dash[0];
+                    v1[1]=v1dash[1];
+                    v1[2]=v1dash[2];
+
+                   v2[0]=v2dash[0];
+                   v2[1]=v2dash[1];
+                   v2[2]=v2dash[2];
+
+                   v3[0]=v3dash[0];
+                   v3[1]=v3dash[1];
+                   v3[2]=v3dash[2];//220=20
+
+                   v4[0]=v4dash[0];
+                   v4[1]=v4dash[1];
+                   v4[2]=v4dash[2];
+
+                   v5[0]=v5dash[0];
+                   v5[1]=v5dash[1];
+                   v5[2]=v5dash[2];
+
+                   v6[0]=v6dash[0];
+                   v6[1]=v6dash[1];
+                   v6[2]=v6dash[2];
+
+                   v7[0]=v7dash[0];
+                   v7[1]=v7dash[1];
+                   v7[2]=v7dash[2];
+
+                   v8[0]=v8dash[0];
+                   v8[1]=v8dash[1];
+                   v8[2]=v8dash[2];
+
+
+                  // calculateThreepointsofFace();
+                  // calculateAngles();
+
+
+                   repaint();
+
+
+
+
+                }
+		if (ev.getSource() == button2) 
+        {
+			
+            resetVertices();       
+            alpha=0;
+            beta=0;
+            gamma=0;
+            choosecamera=0;
+            repaint();
+			
+
+
+        }
+		if (ev.getSource() == button3) 
+        {
+			choosecamera=1;
+			repaint();
+        }
+        if (ev.getSource() == button4) 
+        {
+			chooseColor=1;
+			repaint();
+        }
+        if(ev.getSource()== button5)
+        {
+            choosecolor2=1;
+            repaint();
+        }
+                
+	}
+
+	Button button1,button2,button3,button4,button5;
+	TextField box1,box2,box3;
+   int scalex=7,scaley=7;
+   public void functiontorotateaccordingtocamera()
+   {
+	   anglealpha=Integer.parseInt(box1.getText());
+	    anglebeta=Integer.parseInt(box2.getText());
+	    anglegamma=Integer.parseInt(box3.getText());
+	  alpha=Math.toRadians(anglealpha);
+     beta=Math.toRadians(anglebeta);
+       gamma=Math.toRadians(anglegamma);
+      System.out.println(anglealpha+" "+alpha+" "+anglebeta+" "+beta+" "+anglegamma+" "+gamma);
+
+      cx=Math.cos(alpha);
+       sx=Math.sin(alpha);
+
+       cy=Math.cos(beta);
+       sy=Math.sin(beta);
+
+       cz=Math.cos(gamma);
+       sz=Math.sin(gamma);
+
+       /*rotation in x,y,z and translation*/
+
+       System.out.println("cx="+cx);
+       System.out.println("cy="+cy);
+       System.out.println("sx="+sx);
+       System.out.println("sy="+sy);
+       System.out.println("cz="+cz);
+       System.out.println("sz="+sz);
+
+       System.out.println("new V1[x]="+v1[0]);
+       System.out.println("new V1[x]="+v1[1]);
+       System.out.println("new V1[x]="+v1[2]);
+       System.out.println("new V2[x]="+v2[0]);
+       System.out.println("new V1[x]="+v2[1]);
+       System.out.println("new V1[x]="+v2[2]);
+       System.out.println("new V4[x]="+v4[0]);
+       System.out.println("new V1[x]="+v4[1]);
+       System.out.println("new V1[x]="+v4[2]);
+       System.out.println("new V3[x]="+v3[0]);
+       System.out.println("new V1[x]="+v3[1]);
+       System.out.println("new V1[x]="+v3[2]);
+       System.out.println("new V5[x]="+v5[0]);
+       System.out.println("new V1[x]="+v5[1]);
+       System.out.println("new V1[x]="+v5[2]);
+       System.out.println("new V6[x]="+v6[0]);
+       System.out.println("new V1[x]="+v6[1]);
+       System.out.println("new V1[x]="+v6[2]);
+       System.out.println("new V7[x]="+v7[0]);
+       System.out.println("new V1[x]="+v7[1]);
+       System.out.println("new V1[x]="+v7[2]);
+       System.out.println("new v8[x]="+v8[0]);
+       System.out.println("new V1[x]="+v8[1]);
+       System.out.println("new V1[x]="+v8[2]);
+
+
+       System.out.println("cy*cz="+cy*cz);
+       System.out.println("-cy*sz="+-cy*sz);
+       System.out.println("sy="+sy);
+       System.out.println("cy*(-Centrex*cz+Centrey*sz)-sy*Centrez+Centrex="+(cy*(-Centrex*cz+Centrey*sz)-sy*Centrez+Centrex));
+
+       System.out.println("(sx*sy*cz+cx*sz)="+(sx*sy*cz+cx*sz));
+       System.out.println("Math.round(-sx*sy*sz+cx*cz)="+-sx*sy*sz+cx*cz);
+       System.out.println("(-sx*cy)="+(-sx*cy));
+       System.out.println("cx*(-Centrex*sz-Centrey*cz)-sx*(-sy*(-Centrex*cz+Centrey*sz)-cy*Centrez)+Centrey="+(cx*(-Centrex*sz-Centrey*cz)-sx*(-sy*(-Centrex*cz+Centrey*sz)-cy*Centrez)+Centrey));
+
+       System.out.println("(sx*sz-sy*cx*cz)="+(sx*sz-sy*cx*cz));
+       System.out.println("(sx*cz+cx*sy*sz)="+(sx*cz+cx*sy*sz));
+       System.out.println("cx*cy="+cx*cy);
+       System.out.println("sx*(-Centrex*sz-Centrey*cz)+cx*(-sy*(-Centrex*cz+Centrey*sz)-cy*Centrez)+Centrez="+(sx*(-Centrex*sz-Centrey*cz)+cx*(-sy*(-Centrex*cz+Centrey*sz)-cy*Centrez)+Centrez));
+
+
+       v1dash[0]=(int)(v1[0]*(cy*cz)+v1[1]*(-cy*sz)+v1[2]*(sy)+(cy*(-Centrex*cz+Centrey*sz)-sy*Centrez)+Centrex);
+       v1dash[1]=(int)(v1[0]*(sx*sy*cz+cx*sz)+v1[1]*(-sx*sy*sz+cx*cz)+v1[2]*(-sx*cy)+(cx*(-Centrex*sz-Centrey*cz)-sx*(-sy*(-Centrex*cz+Centrey*sz)-cy*Centrez)+Centrey));
+       v1dash[2]=(int)(v1[0]*(sx*sz-sy*cx*cz)+v1[1]*(sx*cz+cx*sy*sz)+v1[2]*(cx*cy)+(sx*(-Centrex*sz-Centrey*cz))+(cx*(-sy*(-Centrex*cz+Centrey*sz)-cy*Centrez)+Centrez));
+
+
+
+     v2dash[0]=(int)(v2[0]*(cy*cz)+v2[1]*(-cy*sz)+v2[2]*(sy)+(cy*(-Centrex*cz+Centrey*sz)-sy*Centrez)+Centrex);
+     v2dash[1]=(int)(v2[0]*(sx*sy*cz+cx*sz)+v2[1]*(-sx*sy*sz+cx*cz)+v2[2]*(-sx*cy)+(cx*(-Centrex*sz-Centrey*cz)-sx*(-sy*(-Centrex*cz+Centrey*sz)-cy*Centrez)+Centrey));
+     v2dash[2]=(int)(v2[0]*(sx*sz-sy*cx*cz)+v2[1]*(sx*cz+cx*sy*sz)+v2[2]*(cx*cy)+(sx*(-Centrex*sz-Centrey*cz))+(cx*(-sy*(-Centrex*cz+Centrey*sz)-cy*Centrez)+Centrez));
+
+
+     v3dash[0]=(int)(v3[0]*(cy*cz)+v3[1]*(-cy*sz)+v3[2]*(sy)+(cy*(-Centrex*cz+Centrey*sz)-sy*Centrez)+Centrex);
+     v3dash[1]=(int)(v3[0]*(sx*sy*cz+cx*sz)+v3[1]*(-sx*sy*sz+cx*cz)+v3[2]*(-sx*cy)+(cx*(-Centrex*sz-Centrey*cz)-sx*(-sy*(-Centrex*cz+Centrey*sz)-cy*Centrez)+Centrey));
+     v3dash[2]=(int)(v3[0]*(sx*sz-sy*cx*cz)+v3[1]*(sx*cz+cx*sy*sz)+v3[2]*(cx*cy)+(sx*(-Centrex*sz-Centrey*cz))+(cx*(-sy*(-Centrex*cz+Centrey*sz)-cy*Centrez)+Centrez));
+
+
+     v4dash[0]=(int)(v4[0]*(cy*cz)+v4[1]*(-cy*sz)+v4[2]*(sy)+(cy*(-Centrex*cz+Centrey*sz)-sy*Centrez)+Centrex);
+     v4dash[1]=(int)(v4[0]*(sx*sy*cz+cx*sz)+v4[1]*(-sx*sy*sz+cx*cz)+v4[2]*(-sx*cy)+(cx*(-Centrex*sz-Centrey*cz)-sx*(-sy*(-Centrex*cz+Centrey*sz)-cy*Centrez)+Centrey));
+     v4dash[2]=(int)(v4[0]*(sx*sz-sy*cx*cz)+v4[1]*(sx*cz+cx*sy*sz)+v4[2]*(cx*cy)+(sx*(-Centrex*sz-Centrey*cz))+(cx*(-sy*(-Centrex*cz+Centrey*sz)-cy*Centrez)+Centrez));
+
+
+     v5dash[0]=(int)(v5[0]*(cy*cz)+v5[1]*(-cy*sz)+v5[2]*(sy)+(cy*(-Centrex*cz+Centrey*sz)-sy*Centrez)+Centrex);
+     v5dash[1]=(int)(v5[0]*(sx*sy*cz+cx*sz)+v5[1]*(-sx*sy*sz+cx*cz)+v5[2]*(-sx*cy)+(cx*(-Centrex*sz-Centrey*cz)-sx*(-sy*(-Centrex*cz+Centrey*sz)-cy*Centrez)+Centrey));
+     v5dash[2]=(int)(v5[0]*(sx*sz-sy*cx*cz)+v5[1]*(sx*cz+cx*sy*sz)+v5[2]*(cx*cy)+(sx*(-Centrex*sz-Centrey*cz))+(cx*(-sy*(-Centrex*cz+Centrey*sz)-cy*Centrez)+Centrez));
+
+
+     v6dash[0]=(int)(v6[0]*(cy*cz)+v6[1]*(-cy*sz)+v6[2]*(sy)+(cy*(-Centrex*cz+Centrey*sz)-sy*Centrez)+Centrex);
+     v6dash[1]=(int)(v6[0]*(sx*sy*cz+cx*sz)+v6[1]*(-sx*sy*sz+cx*cz)+v6[2]*(-sx*cy)+(cx*(-Centrex*sz-Centrey*cz)-sx*(-sy*(-Centrex*cz+Centrey*sz)-cy*Centrez)+Centrey));
+     v6dash[2]=(int)(v6[0]*(sx*sz-sy*cx*cz)+v6[1]*(sx*cz+cx*sy*sz)+v6[2]*(cx*cy)+(sx*(-Centrex*sz-Centrey*cz))+(cx*(-sy*(-Centrex*cz+Centrey*sz)-cy*Centrez)+Centrez));
+
+
+     v7dash[0]=(int)(v7[0]*(cy*cz)+v7[1]*(-cy*sz)+v7[2]*(sy)+(cy*(-Centrex*cz+Centrey*sz)-sy*Centrez)+Centrex);
+     v7dash[1]=(int)(v7[0]*(sx*sy*cz+cx*sz)+v7[1]*(-sx*sy*sz+cx*cz)+v7[2]*(-sx*cy)+(cx*(-Centrex*sz-Centrey*cz)-sx*(-sy*(-Centrex*cz+Centrey*sz)-cy*Centrez)+Centrey));
+     v7dash[2]=(int)(v7[0]*(sx*sz-sy*cx*cz)+v7[1]*(sx*cz+cx*sy*sz)+v7[2]*(cx*cy)+(sx*(-Centrex*sz-Centrey*cz))+(cx*(-sy*(-Centrex*cz+Centrey*sz)-cy*Centrez)+Centrez));
+
+     v8dash[0]=(int)(v8[0]*(cy*cz)+v8[1]*(-cy*sz)+v8[2]*(sy)+(cy*(-Centrex*cz+Centrey*sz)-sy*Centrez)+Centrex);
+     v8dash[1]=(int)(v8[0]*(sx*sy*cz+cx*sz)+v8[1]*(-sx*sy*sz+cx*cz)+v8[2]*(-sx*cy)+(cx*(-Centrex*sz-Centrey*cz)-sx*(-sy*(-Centrex*cz+Centrey*sz)-cy*Centrez)+Centrey));
+     v8dash[2]=(int)(v8[0]*(sx*sz-sy*cx*cz)+v8[1]*(sx*cz+cx*sy*sz)+v8[2]*(cx*cy)+(sx*(-Centrex*sz-Centrey*cz))+(cx*(-sy*(-Centrex*cz+Centrey*sz)-cy*Centrez)+Centrez));
+
+       perp[0]=(int)(perp[0]*cy*cz-perp[1]*cy*sz+perp[2]*sy-Centrex*cy*cz+Centrey*cy*sz+Centrex*sy*sz-Centrey*sy*cz);
+       perp[1]=(int)(perp[0]*(cx*sz-cz*sx*sy)+perp[1]*(cx*cz-sx*sy*sz)-perp[2]*sx*sy-cx*Centrex*sz-cx*Centrey*cz-sx*sy*Centrex*cz+sx*sy*Centrey*sz+sx*cy*Centrez);
+       perp[2]=(int)(perp[0]*(sx*sz-cx*cz*sy)+perp[1]*(sx*cz+cx*sy*sz)+perp[2]*cx*cy-sx*Centrex*sz-sx*Centrey*cz+cx*sy*Centrex*cz-cx*sy*Centrey*sz-cx*cy*Centrez);
+
+
+
+
+          System.out.println("new V1[x]="+v1dash[0]);
+          System.out.println("new V1[x]="+v1dash[1]);
+          System.out.println("new V1[x]="+v1dash[2]);
+          System.out.println("new V2[x]="+v2dash[0]);
+          System.out.println("new V1[x]="+v2dash[1]);
+          System.out.println("new V1[x]="+v2dash[2]);
+          System.out.println("new V4[x]="+v4dash[0]);
+          System.out.println("new V1[x]="+v4dash[1]);
+          System.out.println("new V1[x]="+v4dash[2]);
+          System.out.println("new V3[x]="+v3dash[0]);
+          System.out.println("new V1[x]="+v3dash[1]);
+          System.out.println("new V1[x]="+v3dash[2]);
+          System.out.println("new V5[x]="+v5dash[0]);
+          System.out.println("new V1[x]="+v5dash[1]);
+          System.out.println("new V1[x]="+v5dash[2]);
+          System.out.println("new V6[x]="+v6dash[0]);
+          System.out.println("new V1[x]="+v6dash[1]);
+          System.out.println("new V1[x]="+v6dash[2]);
+          System.out.println("new V7[x]="+v7dash[0]);
+          System.out.println("new V1[x]="+v7dash[1]);
+          System.out.println("new V1[x]="+v7dash[2]);
+          System.out.println("new v8[x]="+v8dash[0]);
+          System.out.println("new V1[x]="+v8dash[1]);
+          System.out.println("new V1[x]="+v8dash[2]);
+
+
+
+          v1=v1dash;
+          v2=v2dash;
+          v3=v3dash;
+          v4=v4dash;
+          v5=v5dash;
+          v6=v6dash;
+          v7=v7dash;
+          v8=v8dash;
+
+          // from here back to the call inside paint so no repaint
+   }
+
+   public void paint(Graphics g)
+    {
+
+       calculateDistanceFromCameraToVertices();
+       scrheight=getHeight()/2;
+       scrwidth=getWidth()/2;
+
+       Centrex=(v5[0]+v6[0])/2;
+       Centrey=(v2[1]+v4[1])/2;
+       Centrez=(v2[2]+v6[2])/2;
+
+
+
+
+
+
+       //   PERSPECTIVE PROJECTION FORMULA................
+
+    // when plotting is from 3-point projection perspective
+       if( choosecamera ==0) {
+
+           pc=-1/xc;
+           qc=-1/yc;
+           rc=-1/zc;
+
+           System.out.println("Err: bx="+(rc*v1[2]));
+
+          bx=v1[0]/((pc*v1[0])+(qc*v1[1])+(rc*v1[2])+1);
+          by=v1[1]/((pc*v1[0])+(qc*v1[1])+(rc*v1[2])+1);
+
+      //   bx=-bx;
+         System.out.println("scrn width"+scrwidth);
+         System.out.println("scrn height"+scrheight);
+      //  by=-by;
+         System.out.println("DX bx="+bx);
+         System.out.println("DY by="+by);
+
+
+        if(bx<=0)
+            plotdx=(int)(scrwidth+bx);
+        else if(bx>0)
+            plotdx=(int)(scrwidth+bx);
+        if(by<=0)
+            plotdy=(int)(scrheight-by);
+        else if(by>0)
+            plotdy=(int)(scrheight-by);
+            d[0]=(int) Math.round(plotdx);
+            d[1]=(int) Math.round(plotdy);
+           System.out.println("DX="+d[0]);
+          System.out.println("DY="+d[1]);
+          bx=0;by=0;
+
+          System.out.println("scrn width"+scrwidth);
+          System.out.println("scrn height"+scrheight);
+
+          bx=v2[0]/((pc*v2[0])+(qc*v2[1])+(rc*v2[2])+1);
+          by=v2[1]/((pc*v2[0])+(qc*v2[1])+(rc*v2[2])+1);
+          System.out.println("cX bx="+bx);
+          System.out.println("cY by="+by);
+       //   bx=-bx;
+       //   by=-by;
+          if(bx<=0)
+            plotcx=(int)(scrwidth+bx);
+        else if(bx>0)
+            plotcx=(int)(scrwidth+bx);
+        if(by<=0)
+            plotcy=(int)(scrheight-by);
+        else if(by>0)
+            plotcy=(int)(scrheight-by);
+          cc[0]=(int) Math.round(plotcx);
+            cc[1]=(int) Math.round(plotcy);
+            System.out.println("CX="+cc[0]);
+           System.out.println("CY="+cc[1]);
+          bx=0;by=0;
+
+          //FOR 3RD POINT
+
+
+
+          bx=v3[0]/((pc*v3[0])+(qc*v3[1])+(rc*v3[2])+1);
+          by=v3[1]/((pc*v3[0])+(qc*v3[1])+(rc*v3[2])+1);
+      //    bx=-bx;
+      //    by=-by;
+          System.out.println("BX bx="+bx);
+          System.out.println("BY by="+by);
+
+          if(bx<=0)
+            plotbx=(int)(scrwidth+bx);
+        else if(bx>0)
+            plotbx=(int)(scrwidth+bx);
+        if(by<=0)
+            plotby=(int)(scrheight-by);
+        else if(by>0)
+            plotby=(int)(scrheight-by);
+          b[0]=(int) Math.round(plotbx);
+            b[1]=(int) Math.round(plotby);
+            System.out.println("BX="+b[0]);
+           System.out.println("By="+b[1]);
+          bx=0;by=0;
+          //FOR 4TH POINT
+
+
+          bx=v4[0]/((pc*v4[0])+(qc*v4[1])+(rc*v4[2])+1);
+          by=v4[1]/((pc*v4[0])+(qc*v4[1])+(rc*v4[2])+1);
+
+
+          System.out.println("AX bx="+bx);
+          System.out.println("AY by="+by);
+       //   bx=-bx;
+
+       //   by=-by;
+          if(bx<=0)
+            plotax=(int)(scrwidth+bx);
+        else if(bx>0)
+            plotax=(int)(scrwidth+bx);
+        if(by<=0)
+            plotay=(int)(scrheight-by);
+        else if(by>0)
+            plotay=(int)(scrheight-by);
+          a[0]=(int) Math.round(plotax);
+            a[1]=(int) Math.round(plotay);
+           System.out.println("AX="+a[0]);
+           System.out.println("Ay="+a[1]);
+          bx=0;by=0;
+           //FOR 5TH POINT
+
+
+          bx=v5[0]/((pc*v5[0])+(qc*v5[1])+(rc*v5[2])+1);
+          by=v5[1]/((pc*v5[0])+(qc*v5[1])+(rc*v5[2])+1);
+
+          System.out.println("HX bx="+bx);
+          System.out.println("HY by="+by);
+       //   bx=-bx;
+       //   by=-by;
+          if(bx<=0)
+            plothx=(int)(scrwidth+bx);
+        else if(bx>0)
+            plothx=(int)(scrwidth+bx);
+        if(by<=0)
+            plothy=(int)(scrheight-by);
+        else if(by>0)
+            plothy=(int)(scrheight-by);
+          h[0]=((int) Math.round(plothx));
+            h[1]=((int) Math.round(plothy));
+           System.out.println("HX="+h[0]);
+           System.out.println("Hy="+h[1]);
+          bx=0;by=0;
+           //FOR 6TH POINT
+          System.out.println("GX data1 bx="+pc*v6[0]);
+          System.out.println("GY data2 by="+((pc*v6[0])+(qc*v6[1])+(rc*v6[2])+1));
+
+          bx=v6[0]/((pc*v6[0])+(qc*v6[1])+(rc*v6[2])+1);
+          by=v6[1]/((pc*v6[0])+(qc*v6[1])+(rc*v6[2])+1);
+
+          System.out.println("GX bx="+bx);
+          System.out.println("GY by="+by);
+       //   bx=-bx;
+       //   by=-by;
+          if(bx<=0)
+            plotgx=(int)(scrwidth+bx);
+        else if(bx>0)
+            plotgx=(int)(scrwidth+bx);
+        if(by<=0)
+            plotgy=(int)(scrheight-by);
+        else if(by>0)
+            plotgy=(int)(scrheight-by);
+          gg[0]=(int) Math.round(plotgx);
+          gg[1]=(int) Math.round(plotgy);
+          System.out.println("GX="+gg[0]);
+         System.out.println("Gy="+gg[1]);
+          bx=0;by=0;
+           //FOR 7TH POINT
+
+
+          bx=v7[0]/((pc*v7[0])+(qc*v7[1])+(rc*v7[2])+1);
+          by=v7[1]/((pc*v7[0])+(qc*v7[1])+(rc*v7[2])+1);
+      //    bx=-bx;
+      //    by=-by; 
+
+          System.out.println("FX bx="+bx);
+          System.out.println("FY by="+by);
+
+          if(bx<=0)
+            plotfx=(int)(scrwidth+bx);
+        else if(bx>0)
+            plotfx=(int)(scrwidth+bx);
+        if(by<=0)
+            plotfy=(int)(scrheight-by);
+        else if(by>0)
+            plotfy=(int)(scrheight-by);
+          f[0]=(int) Math.round(plotfx);
+            f[1]=(int) Math.round(plotfy);
+          System.out.println("FX="+f[0]);
+          System.out.println("Fy="+f[1]);
+          bx=0;by=0;
+           //FOR 8TH POINT
+
+
+          bx=v8[0]/((pc*v8[0])+(qc*v8[1])+(rc*v8[2])+1);
+          by=v8[1]/((pc*v8[0])+(qc*v8[1])+(rc*v8[2])+1);
+      //    bx=-bx;
+      //    by=-by;
+
+          System.out.println("EX bx="+bx);
+          System.out.println("EY by="+by);
+           if(bx<=0)
+            plotex=(int)(scrwidth+bx);
+        else if(bx>0)
+            plotex=(int)(scrwidth+bx);
+        if(by<=0)
+            plotey=(int)(scrheight-by);
+        else if(by>0)
+            plotey=(int)(scrheight-by);
+          ee[0]=(int) Math.round(plotex);
+            ee[1]=(int) Math.round(plotey);
+          System.out.println("EX="+ee[0]);
+           System.out.println("Ey="+ee[1]);
+          bx=0;by=0; 
+
+	   // Origin
+
+
+          bx=Origin[0]/((pc*Origin[0])+(qc*Origin[1])+(rc*Origin[2])+1);
+          by=Origin[1]/((pc*Origin[0])+(qc*Origin[1])+(rc*Origin[2])+1);
+      //    bx=-bx;
+      //    by=-by;
+
+
+           if(bx<=0)
+            plotperpdx=(int)(scrwidth+bx);
+        else if(bx>0)
+            plotperpdx=(int)(scrwidth+bx);
+        if(by<=0)
+	plotperpdy=(int)(scrheight-by);
+        else if(by>0)
+	plotperpdy=(int)(scrheight-by);
+          Perpendicular[0]=(int) Math.round(plotperpdx);       // Origin is stored at perpendicular temporary array
+          Perpendicular[1]=(int) Math.round(plotperpdy);
+
+          bx=0;by=0; 
+          // SCALING..............
+
+
+          int fixedpointx=b[0];
+          int fixedpointy=b[1];
+          a[0]=fixedpointx+scalex*(a[0]-fixedpointx);
+           b[0]=fixedpointx+scalex*(b[0]-fixedpointx);
+           cc[0]=fixedpointx+scalex*(cc[0]-fixedpointx);
+           d[0]=fixedpointx+scalex*(d[0]-fixedpointx);
+           ee[0]=fixedpointx+scalex*(ee[0]-fixedpointx);
+           f[0]=fixedpointx+scalex*(f[0]-fixedpointx);
+           gg[0]=fixedpointx+scalex*(gg[0]-fixedpointx);
+           h[0]=fixedpointx+scalex*(h[0]-fixedpointx);
+           Perpendicular[0]=fixedpointx+scalex*(Perpendicular[0]-fixedpointx);
+
+           a[1]=fixedpointy+scaley*(a[1]-fixedpointy);
+           b[1]=fixedpointy+scaley*(b[1]-fixedpointy);
+           cc[1]=fixedpointy+scaley*(cc[1]-fixedpointy);
+           d[1]=fixedpointy+scaley*(d[1]-fixedpointy);
+           ee[1]=fixedpointy+scaley*(ee[1]-fixedpointy);
+           f[1]=fixedpointy+scaley*(f[1]-fixedpointy);
+           gg[1]=fixedpointy+scaley*(gg[1]-fixedpointy);
+           h[1]=fixedpointy+scaley*(h[1]-fixedpointy);
+           Perpendicular[1]=fixedpointy+scaley*(Perpendicular[1]-fixedpointy);
+
+
+
+              System.out.println("dX="+gg[0]);
+              System.out.println("dy="+gg[1]);
+
+
+
+           g.setColor(new Color(255));
+
+          g.drawLine(ee[0],ee[1],f[0],f[1]);//EF
+          g.drawLine(f[0],f[1],h[0],h[1]);//FH
+          g.drawLine(gg[0],gg[1],h[0],h[1]);//GH
+            g.drawLine(ee[0],ee[1],gg[0],gg[1]);//EG
+            g.drawLine(a[0],a[1],cc[0],cc[1]);//AC
+            g.drawLine(d[0],d[1],cc[0],cc[1]);//DC
+            g.drawLine(d[0],d[1],h[0],h[1]);//DH
+              g.drawLine(a[0],a[1],ee[0],ee[1]);//AE
+              g.drawLine(gg[0],gg[1],cc[0],cc[1]);//GC
+              g.drawLine(f[0],f[1],b[0],b[1]);//FB
+              g.drawLine(a[0],a[1],b[0],b[1]);//AB
+              g.drawLine(b[0],b[1],d[0],d[1]);//BD
+
+              g.drawLine(0, Perpendicular[1], Perpendicular[0], Perpendicular[1]);
+              g.drawLine(Perpendicular[0], Perpendicular[1],scrwidth*2, Perpendicular[1]);
+               g.drawString("Horizon", 0, Perpendicular[1]);
+               g.drawLine(getWidth()/2,0,getWidth()/2,getHeight());
+               g.drawLine(162,getHeight(),getWidth(),0);
+             // g.drawLine(gg[0],gg[1],Perpendicular[0],Perpendicular[1]);//Perpendicular
+
+
+
+
+
+
+
+
+       }
+       // when plotting is from camera perspective
+       else if (choosecamera==1) 
+
+       {
+	
+	 
+	   for(int i=0;i<3;i++)
+           {
+               fd[i]=v1[i]-c[i];
+               fc[i]=v2[i]-c[i];
+               fb[i]=v3[i]-c[i];
+               fa[i]=v4[i]-c[i];
+               fh[i]=v5[i]-c[i];
+               fg[i]=v6[i]-c[i];
+               ff[i]=v7[i]-c[i];
+               fe[i]=v8[i]-c[i];
+               fPerpendicualr[i]=Origin[i]-c[i];
+           }
+	
+	   /*
+	    * 
+	    * 
+	    *   cordinates orientation is different when camera transform is done
+	    */
+	
+	
+	
+
+
+
+	    double dx=Math.cos(0)*((Math.sin(0)*fd[1])+(Math.cos(0)*fd[0]));
+        double dy=Math.sin(0)*((Math.cos(0)*fd[2])+Math.sin(0)*(Math.sin(0)*fd[1]+Math.cos(0)*fd[0]))+Math.cos(0)*((Math.cos(0)*fd[1])-(Math.sin(0)*fd[0]));
+        double dz=Math.cos(0)*((Math.cos(0)*fd[2])+Math.sin(0)*(Math.sin(0)*fd[1]+Math.cos(0)*fd[0]))-Math.sin(0)*((Math.cos(0)*fd[1])-(Math.sin(0)*fd[0]));
+
+       bx=(e[2]/dz)*dx+e[0];
+       by=(e[2]/dz)*dy+e[1];  
+
+
+        // bx=-bx;
+         System.out.println("scrn width"+scrwidth);
+        //by=-by;
+
+         if(bx<=0)
+             plotdx=(int)(scrwidth+bx);
+         else if(bx>0)
+             plotdx=(int)(scrwidth+bx);
+         if(by<=0)
+             plotdy=(int)(scrheight-by);
+         else if(by>0)
+             plotdy=(int)(scrheight-by);
+             d[0]=(int) Math.round(plotdx);
+             d[1]=(int) Math.round(plotdy);
+            System.out.println("DX="+d[0]);
+           System.out.println("DY="+d[1]);
+           bx=0;by=0;
+
+           dx=Math.cos(0)*((Math.sin(0)*fc[1])+(Math.cos(0)*fc[0]));
+           dy=Math.sin(0)*((Math.cos(0)*fc[2])+Math.sin(0)*(Math.sin(0)*fc[1]+Math.cos(0)*fc[0]))+Math.cos(0)*((Math.cos(0)*fc[1])-(Math.sin(0)*fc[0]));
+           dz=Math.cos(0)*((Math.cos(0)*fc[2])+Math.sin(0)*(Math.sin(0)*fc[1]+Math.cos(0)*fc[0]))-Math.sin(0)*((Math.cos(0)*fc[1])-(Math.sin(0)*fc[0]));
+
+           bx=(e[2]/dz)*dx+e[0];
+          by=(e[2]/dz)*dy+e[1];
+
+         // bx=-bx;
+         // by=-by;
+          if(bx<=0)
+              plotcx=(int)(scrwidth+bx);
+          else if(bx>0)
+              plotcx=(int)(scrwidth+bx);
+          if(by<=0)
+              plotcy=(int)(scrheight-by);
+          else if(by>0)
+              plotcy=(int)(scrheight-by);
+            cc[0]=(int) Math.round(plotcx);
+              cc[1]=(int) Math.round(plotcy);
+              System.out.println("CX="+cc[0]);
+             System.out.println("CY="+cc[1]);
+            bx=0;by=0;
+
+          //FOR 3RD POINT
+            dx=Math.cos(0)*((Math.sin(0)*fb[1])+(Math.cos(0)*fb[0]));
+            dy=Math.sin(0)*((Math.cos(0)*fb[2])+Math.sin(0)*(Math.sin(0)*fb[1]+Math.cos(0)*fb[0]))+Math.cos(0)*((Math.cos(0)*fb[1])-(Math.sin(0)*fb[0]));
+            dz=Math.cos(0)*((Math.cos(0)*fb[2])+Math.sin(0)*(Math.sin(0)*fb[1]+Math.cos(0)*fb[0]))-Math.sin(0)*((Math.cos(0)*fb[1])-(Math.sin(0)*fb[0]));
+
+            bx=(e[2]/dz)*dx+e[0];
+           by=(e[2]/dz)*dy+e[1];
+         // bx=-bx;
+         // by=-by;
+          if(bx<=0)
+              plotbx=(int)(scrwidth+bx);
+          else if(bx>0)
+              plotbx=(int)(scrwidth+bx);
+          if(by<=0)
+              plotby=(int)(scrheight-by);
+          else if(by>0)
+              plotby=(int)(scrheight-by);
+            b[0]=(int) Math.round(plotbx);
+              b[1]=(int) Math.round(plotby);
+              System.out.println("BX="+b[0]);
+             System.out.println("By="+b[1]);
+            bx=0;by=0;
+          //FOR 4TH POINT
+            dx=Math.cos(0)*((Math.sin(0)*fa[1])+(Math.cos(0)*fa[0]));
+            dy=Math.sin(0)*((Math.cos(0)*fa[2])+Math.sin(0)*(Math.sin(0)*fa[1]+Math.cos(0)*fa[0]))+Math.cos(0)*((Math.cos(0)*fa[1])-(Math.sin(0)*fa[0]));
+            dz=Math.cos(0)*((Math.cos(0)*fa[2])+Math.sin(0)*(Math.sin(0)*fa[1]+Math.cos(0)*fa[0]))-Math.sin(0)*((Math.cos(0)*fa[1])-(Math.sin(0)*fa[0]));
+          // System.out.println("dY="+dy); 
+            bx=(e[2]/dz)*dx+e[0];
+           by=(e[2]/dz)*dy+e[1];
+        // bx=-bx;
+
+         // by=-by;
+          if(bx<=0)
+              plotax=(int)(scrwidth+bx);
+          else if(bx>0)
+              plotax=(int)(scrwidth+bx);
+          if(by<=0)
+              plotay=(int)(scrheight-by);
+          else if(by>0)
+              plotay=(int)(scrheight-by);
+            a[0]=(int) Math.round(plotax);
+              a[1]=(int) Math.round(plotay);
+             System.out.println("AX="+a[0]);
+             System.out.println("Ay="+a[1]);
+            bx=0;by=0;
+           //FOR 5TH POINT
+            dx=Math.cos(0)*((Math.sin(0)*fh[1])+(Math.cos(0)*fh[0]));
+            dy=Math.sin(0)*((Math.cos(0)*fh[2])+Math.sin(0)*(Math.sin(0)*fh[1]+Math.cos(0)*fh[0]))+Math.cos(0)*((Math.cos(0)*fh[1])-(Math.sin(0)*fh[0]));
+            dz=Math.cos(0)*((Math.cos(0)*fh[2])+Math.sin(0)*(Math.sin(0)*fh[1]+Math.cos(0)*fh[0]))-Math.sin(0)*((Math.cos(0)*fh[1])-(Math.sin(0)*fh[0]));
+
+            bx=(e[2]/dz)*dx+e[0];
+           by=(e[2]/dz)*dy+e[1];
+          // bx=-bx;
+         // by=-by;
+          if(bx<=0)
+              plothx=(int)(scrwidth+bx);
+          else if(bx>0)
+              plothx=(int)(scrwidth+bx);
+          if(by<=0)
+              plothy=(int)(scrheight-by);
+          else if(by>0)
+              plothy=(int)(scrheight-by);
+            h[0]=((int) Math.round(plothx));
+              h[1]=((int) Math.round(plothy));
+             System.out.println("HX="+h[0]);
+             System.out.println("Hy="+h[1]);
+            bx=0;by=0;
+           //FOR 6TH POINT
+            dx=Math.cos(0)*((Math.sin(0)*fg[1])+(Math.cos(0)*fg[0]));
+            dy=Math.sin(0)*((Math.cos(0)*fg[2])+Math.sin(0)*(Math.sin(0)*fg[1]+Math.cos(0)*fg[0]))+Math.cos(0)*((Math.cos(0)*fg[1])-(Math.sin(0)*fg[0]));
+            dz=Math.cos(0)*((Math.cos(0)*fg[2])+Math.sin(0)*(Math.sin(0)*fg[1]+Math.cos(0)*fg[0]))-Math.sin(0)*((Math.cos(0)*fg[1])-(Math.sin(0)*fg[0]));
+
+            bx=(e[2]/dz)*dx+e[0];
+           by=(e[2]/dz)*dy+e[1];
+        //  bx=-bx;
+         // by=-by;
+          if(bx<=0)
+              plotgx=(int)(scrwidth+bx);
+          else if(bx>0)
+              plotgx=(int)(scrwidth+bx);
+          if(by<=0)
+              plotgy=(int)(scrheight-by);
+          else if(by>0)
+              plotgy=(int)(scrheight-by);
+            gg[0]=(int) Math.round(plotgx);
+            gg[1]=(int) Math.round(plotgy);
+            System.out.println("GX="+gg[0]);
+           System.out.println("Gy="+gg[1]);
+            bx=0;by=0;
+           //FOR 7TH POINT
+            dx=Math.cos(0)*((Math.sin(0)*ff[1])+(Math.cos(0)*ff[0]));
+            dy=Math.sin(0)*((Math.cos(0)*ff[2])+Math.sin(0)*(Math.sin(0)*ff[1]+Math.cos(0)*ff[0]))+Math.cos(0)*((Math.cos(0)*ff[1])-(Math.sin(0)*ff[0]));
+            dz=Math.cos(0)*((Math.cos(0)*ff[2])+Math.sin(0)*(Math.sin(0)*ff[1]+Math.cos(0)*ff[0]))-Math.sin(0)*((Math.cos(0)*ff[1])-(Math.sin(0)*ff[0]));
+
+            bx=(e[2]/dz)*dx+e[0];
+           by=(e[2]/dz)*dy+e[1];
+          //bx=-bx;
+          //by=-by; 
+          if(bx<=0)
+              plotfx=(int)(scrwidth+bx);
+          else if(bx>0)
+              plotfx=(int)(scrwidth+bx);
+          if(by<=0)
+              plotfy=(int)(scrheight-by);
+          else if(by>0)
+              plotfy=(int)(scrheight-by);
+            f[0]=(int) Math.round(plotfx);
+              f[1]=(int) Math.round(plotfy);
+            System.out.println("FX="+f[0]);
+            System.out.println("Fy="+f[1]);
+            bx=0;by=0;
+
+
+            //FOR 8TH POINT
+            dx=Math.cos(0)*((Math.sin(0)*fe[1])+(Math.cos(0)*fe[0]));
+            dy=Math.sin(0)*((Math.cos(0)*fe[2])+Math.sin(0)*(Math.sin(0)*fe[1]+Math.cos(0)*fe[0]))+Math.cos(0)*((Math.cos(0)*fe[1])-(Math.sin(0)*fe[0]));
+            dz=Math.cos(0)*((Math.cos(0)*fe[2])+Math.sin(0)*(Math.sin(0)*fe[1]+Math.cos(0)*fe[0]))-Math.sin(0)*((Math.cos(0)*fe[1])-(Math.sin(0)*fe[0]));
+
+            bx=(e[2]/dz)*dx+e[0];
+           by=(e[2]/dz)*dy+e[1];
+
+         // bx=-bx;
+        //  by=-by;
+          if(bx<=0)
+              plotex=(int)(scrwidth+bx);
+          else if(bx>0)
+              plotex=(int)(scrwidth+bx);
+          if(by<=0)
+              plotey=(int)(scrheight-by);
+          else if(by>0)
+              plotey=(int)(scrheight-by);
+            ee[0]=(int) Math.round(plotex);
+              ee[1]=(int) Math.round(plotey);
+            System.out.println("EX="+ee[0]);
+             System.out.println("Ey="+ee[1]);
+            bx=0;by=0; 
+
+
+
+          //FOR Origin
+            dx=-fPerpendicualr[0]*sintheta+fPerpendicualr[1]*costheta;
+            dy=-fPerpendicualr[0]*cosphi*costheta-fPerpendicualr[1]*cosphi*sintheta+fPerpendicualr[2]*sintheta;
+           dz=-fPerpendicualr[0]*sinphi*costheta-fPerpendicualr[1]*sinphi*sintheta-fPerpendicualr[2]*cosphi;
+
+           bx=dx/((pc*dx)+(qc*dy)+(rc*dz)+1);
+           by=dy/((pc*dx)+(qc*dy)+(rc*dz)+1);
+
+         // bx=-bx;
+        //  by=-by;
+          if(bx<=0)
+              plotperpdx=(int)(scrwidth+bx);
+          else if(bx>0)
+	  plotperpdx=(int)(scrwidth+bx);
+          if(by<=0)
+	  plotperpdy=(int)(scrheight-by);
+          else if(by>0)
+	  plotperpdy=(int)(scrheight-by);
+            Perpendicular[0]=(int) Math.round(plotperpdx);
+            Perpendicular[1]=(int) Math.round(plotperpdy);
+
+       // EUCLIDEAN DISTANCE............
+
+
+
+
+
+         // SCALING..............
+         int fixedpointx=b[0];
+         int fixedpointy=b[1];
+         a[0]=fixedpointx+scalex*(a[0]-fixedpointx);
+          b[0]=fixedpointx+scalex*(b[0]-fixedpointx);
+          cc[0]=fixedpointx+scalex*(cc[0]-fixedpointx);
+          d[0]=fixedpointx+scalex*(d[0]-fixedpointx);
+          ee[0]=fixedpointx+scalex*(ee[0]-fixedpointx);
+          f[0]=fixedpointx+scalex*(f[0]-fixedpointx);
+          gg[0]=fixedpointx+scalex*(gg[0]-fixedpointx);
+          h[0]=fixedpointx+scalex*(h[0]-fixedpointx);
+          Perpendicular[0]=fixedpointx+scalex*(Perpendicular[0]-fixedpointx);
+
+          a[1]=fixedpointy+scaley*(a[1]-fixedpointy);
+          b[1]=fixedpointy+scaley*(b[1]-fixedpointy);
+          cc[1]=fixedpointy+scaley*(cc[1]-fixedpointy);
+          d[1]=fixedpointy+scaley*(d[1]-fixedpointy);
+          ee[1]=fixedpointy+scaley*(ee[1]-fixedpointy);
+          f[1]=fixedpointy+scaley*(f[1]-fixedpointy);
+          gg[1]=fixedpointy+scaley*(gg[1]-fixedpointy);
+          h[1]=fixedpointy+scaley*(h[1]-fixedpointy);
+          Perpendicular[1]=fixedpointy+scaley*(Perpendicular[1]-fixedpointy);
+
+         // g.setColor(new Color(255));
+          g.setColor(redColor);
+            g.drawLine(ee[0],ee[1],f[0],f[1]);//EF
+            g.drawLine(f[0],f[1],h[0],h[1]);//FH
+           g.drawLine(gg[0],gg[1],h[0],h[1]);//GH
+            g.drawLine(ee[0],ee[1],gg[0],gg[1]);//EG
+
+            g.setColor(blueColor);
+             g.drawLine(a[0],a[1],cc[0],cc[1]);//AC
+              g.drawLine(d[0],d[1],cc[0],cc[1]);//DC
+              g.drawLine(a[0],a[1],b[0],b[1]);//AB
+              g.drawLine(b[0],b[1],d[0],d[1]);//BD
+              g.setColor(blackColor);
+            g.drawLine(d[0],d[1],h[0],h[1]);//DH
+               g.drawLine(a[0],a[1],ee[0],ee[1]);//AE
+              g.drawLine(gg[0],gg[1],cc[0],cc[1]);//GC
+              g.drawLine(f[0],f[1],b[0],b[1]);//FB
+
+
+
+              calculateMidpoints();
+              calculateThreepointsofFace();
+              calculateAngles();
+        if(chooseColor==1)
+        {
+
+            calculateMidpoints();
+            calculateThreepointsofFace();
+            calculateAngles();
+            //calculate face margins
+
+                if(dv1==clip || dv2==clip || dv3==clip || dv4== clip)   
+                {
+
+                }
+                else
+                {
+                    //if pt1 is adjacent search for cliiping within face if neccessary
+                   if (clip==dv8)
+                   {
+                       //see if dv1 lies inside face
+
+
+                        tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=gg[0];
+                        tempMaxMin[2]=cc[0];
+                        tempMaxMin[3]=d[0];
+                        bubblesort();
+                        maxXHGCD=tempMaxMin[3];
+                        minXHGCD=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=gg[1];
+                        tempMaxMin[2]=cc[1];
+                        tempMaxMin[3]=d[1];
+                        bubblesort();
+                        maxYHGCD=tempMaxMin[3];
+                        minYHGCD=tempMaxMin[0];
+
+                        tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=d[0];
+                        tempMaxMin[2]=b[0];
+                        tempMaxMin[3]=f[0];
+                        bubblesort();
+                        maxXHDBF=tempMaxMin[3];
+                        minXHDBF=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=d[1];
+                        tempMaxMin[2]=b[1];
+                        tempMaxMin[3]=f[1];
+                        bubblesort();
+                        maxYHDBF=tempMaxMin[3];
+                        minYHDBF=tempMaxMin[0];
+                        if(a[0]>=minXHGCD && a[0]<=maxXHGCD && a[1]>=minYHGCD && a[1]<=maxYHGCD )
+                        {
+
+                        }
+                       else if(a[0]>=minXHDBF && a[0]<=maxXHDBF && a[1]>=minYHDBF && a[1]<=maxYHDBF)
+                        {
+
+                        }
+                        else
+                        {
+                            g.setColor(blueColor);
+                            // g.setColor(blueColorcolor);
+                            int recDCABx[]={d[0],cc[0],a[0],b[0]};
+                            int recDCABy[]={d[1],cc[1],a[1],b[1]};
+                            g.fillPolygon(recDCABx, recDCABy, 4);
+                        }
+                    }
+
+
+                   else if (clip==dv7) 
+                   {
+                       //see if dv2 lies inside any face
+                       tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=gg[0];
+                        tempMaxMin[2]=cc[0];
+                        tempMaxMin[3]=d[0];
+                        bubblesort();
+                        maxXHGCD=tempMaxMin[3];
+                        minXHGCD=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=gg[1];
+                        tempMaxMin[2]=cc[1];
+                        tempMaxMin[3]=d[1];
+                        bubblesort();
+                        maxYHGCD=tempMaxMin[3];
+                        minYHGCD=tempMaxMin[0];
+
+                        tempMaxMin[0]=gg[0];
+                        tempMaxMin[1]=cc[0];
+                        tempMaxMin[2]=a[0];
+                        tempMaxMin[3]=ee[0];
+                        bubblesort();
+                        maxXGCAE=tempMaxMin[3];
+                        minXGCAE=tempMaxMin[0];
+                        tempMaxMin[0]=gg[1];
+                        tempMaxMin[1]=cc[1];
+                        tempMaxMin[2]=a[1];
+                        tempMaxMin[3]=ee[1];
+                        bubblesort();
+                        maxYGCAE=tempMaxMin[3];
+                        minYGCAE=tempMaxMin[0];
+                        if(b[0]>=minXHGCD && b[0]<=maxXHGCD && b[1]>=minYHGCD && b[1]<=maxYHGCD )
+                        {
+
+                        }
+
+                       else if(b[0]>=minXGCAE && b[0]<=maxXGCAE && a[1]>=minYHDBF && a[1]<=maxYHDBF)
+                        {
+
+                        }
+                        else
+                        {
+                            g.setColor(blueColor);
+                            // g.setColor(blueColorcolor);
+                            int recDCABx[]={d[0],cc[0],a[0],b[0]};
+                            int recDCABy[]={d[1],cc[1],a[1],b[1]};
+                            g.fillPolygon(recDCABx, recDCABy, 4);
+                        }
+                   }
+                   else if(clip==dv6)
+                   {
+                       //see if dv3 lies inside
+                       tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=d[0];
+                        tempMaxMin[2]=b[0];
+                        tempMaxMin[3]=f[0];
+                        bubblesort();
+                        maxXHDBF=tempMaxMin[3];
+                        minXHDBF=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=d[1];
+                        tempMaxMin[2]=b[1];
+                        tempMaxMin[3]=f[1];
+                        bubblesort();
+                        maxYHDBF=tempMaxMin[3];
+                        minYHDBF=tempMaxMin[0];
+
+                        tempMaxMin[0]=f[0];
+                        tempMaxMin[1]=ee[0];
+                        tempMaxMin[2]=a[0];
+                        tempMaxMin[3]=b[0];
+                        bubblesort();
+                        maxXFEAB=tempMaxMin[3];
+                        minXFEAB=tempMaxMin[0];
+                        tempMaxMin[0]=f[1];
+                        tempMaxMin[1]=ee[1];
+                        tempMaxMin[2]=a[1];
+                        tempMaxMin[3]=b[1];
+                        bubblesort();
+                        maxYFEAB=tempMaxMin[3];
+                        minYFEAB=tempMaxMin[0];
+
+                        if(cc[0]>=minXHDBF && cc[0]<=maxXHDBF && cc[1]>=minYHDBF && cc[1]<=maxYHDBF)
+                        {
+
+                        }
+                        else if(cc[0]>=minXFEAB && cc[0]<=maxXFEAB && cc[1]>=minYFEAB && cc[1]<=maxYFEAB)
+                        {
+
+                        }
+                        else
+                        {
+                            g.setColor(blueColor);
+                            // g.setColor(blueColorcolor);
+                            int recDCABx[]={d[0],cc[0],a[0],b[0]};
+                            int recDCABy[]={d[1],cc[1],a[1],b[1]};
+                            g.fillPolygon(recDCABx, recDCABy, 4);
+                        }
+
+                   }
+                   else if(clip==dv5)
+                   {
+                       //see if dv4 lies inside any face
+                       tempMaxMin[0]=f[0];
+                        tempMaxMin[1]=ee[0];
+                        tempMaxMin[2]=a[0];
+                        tempMaxMin[3]=b[0];
+                        bubblesort();
+                        maxXFEAB=tempMaxMin[3];
+                        minXFEAB=tempMaxMin[0];
+                        tempMaxMin[0]=f[1];
+                        tempMaxMin[1]=ee[1];
+                        tempMaxMin[2]=a[1];
+                        tempMaxMin[3]=b[1];
+                        bubblesort();
+                        maxYFEAB=tempMaxMin[3];
+                        minYFEAB=tempMaxMin[0];
+
+                        tempMaxMin[0]=gg[0];
+                        tempMaxMin[1]=cc[0];
+                        tempMaxMin[2]=a[0];
+                        tempMaxMin[3]=ee[0];
+                        bubblesort();
+                        maxXGCAE=tempMaxMin[3];
+                        minXGCAE=tempMaxMin[0];
+                        tempMaxMin[0]=gg[1];
+                        tempMaxMin[1]=cc[1];
+                        tempMaxMin[2]=a[1];
+                        tempMaxMin[3]=ee[1];
+                        bubblesort();
+                        maxYGCAE=tempMaxMin[3];
+                        minYGCAE=tempMaxMin[0];
+
+                        if(d[0]>=minXGCAE && d[0]<=maxXGCAE && d[1]>=minYHDBF && d[1]<=maxYHDBF)
+                        {
+
+                        }
+                        else if(d[0]>=minXFEAB && d[0]<=maxXFEAB && d[1]>=minYFEAB && d[1]<=maxYFEAB)
+                        {
+
+                        }
+                        else
+                        {
+                            g.setColor(blueColor);
+                            // g.setColor(blueColorcolor);
+                            int recDCABx[]={d[0],cc[0],a[0],b[0]};
+                            int recDCABy[]={d[1],cc[1],a[1],b[1]};
+                            g.fillPolygon(recDCABx, recDCABy, 4);
+                        }
+
+
+                       //if not then draw recDCAB
+                   } 
+                }
+                if(dv1==clip || dv3==clip || dv5==clip || dv7== clip)
+                {
+
+                }
+
+                 else
+                {
+                    if (clip==dv8)
+                   {
+                       //see if dv1 lies inside face
+                        tempMaxMin[0]=d[0];
+                        tempMaxMin[1]=a[0];
+                        tempMaxMin[2]=cc[0];
+                        tempMaxMin[3]=b[0];
+                        bubblesort();
+                        maxXDCAB=tempMaxMin[3];
+                        minXDCAB=tempMaxMin[0];
+
+                        tempMaxMin[0]=d[1];
+                        tempMaxMin[1]=a[1];
+                        tempMaxMin[2]=cc[1];
+                        tempMaxMin[3]=b[1];
+                        bubblesort();
+                        maxYDCAB=tempMaxMin[3];
+                        minYDCAB=tempMaxMin[0];
+
+                        tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=gg[0];
+                        tempMaxMin[2]=cc[0];
+                        tempMaxMin[3]=d[0];
+                        bubblesort();
+                        maxXHGCD=tempMaxMin[3];
+                        minXHGCD=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=gg[1];
+                        tempMaxMin[2]=cc[1];
+                        tempMaxMin[3]=d[1];
+                        bubblesort();
+                        maxYHGCD=tempMaxMin[3];
+                        minYHGCD=tempMaxMin[0];
+                    if(f[0]>=minXDCAB && f[0]<=maxXDCAB && f[1]>=minYDCAB && f[1]<=maxYDCAB)
+                    {
+
+                    }
+                    else if(f[0]>=minXHGCD && f[0]<=maxXHGCD && f[1]>=minYHGCD && f[1]<=maxYHGCD )
+                    {
+
+                    }
+                    else
+                    {
+                        g.setColor(yellowColor);
+               // g.setColor(blueColorcolor);
+               int recHDBFx[]={h[0],d[0],b[0],f[0]};
+               int recHDBFy[]={h[1],d[1],b[1],f[1]};
+               g.fillPolygon(recHDBFx, recHDBFy, 4);
+                    }       
+               }
+                    else if(clip==dv6)
+                   {
+                        tempMaxMin[0]=f[0];
+                        tempMaxMin[1]=ee[0];
+                        tempMaxMin[2]=a[0];
+                        tempMaxMin[3]=b[0];
+                        bubblesort();
+                        maxXFEAB=tempMaxMin[3];
+                        minXFEAB=tempMaxMin[0];
+                        tempMaxMin[0]=f[1];
+                        tempMaxMin[1]=ee[1];
+                        tempMaxMin[2]=a[1];
+                        tempMaxMin[3]=b[1];
+                        bubblesort();
+                        maxYFEAB=tempMaxMin[3];
+                        minYFEAB=tempMaxMin[0];
+
+                        tempMaxMin[0]=d[0];
+                        tempMaxMin[1]=a[0];
+                        tempMaxMin[2]=cc[0];
+                        tempMaxMin[3]=b[0];
+                        bubblesort();
+                        maxXDCAB=tempMaxMin[3];
+                        minXDCAB=tempMaxMin[0];
+                        tempMaxMin[0]=d[1];
+                        tempMaxMin[1]=a[1];
+                        tempMaxMin[2]=cc[1];
+                        tempMaxMin[3]=b[1];
+                        bubblesort();
+                        maxYDCAB=tempMaxMin[3];
+                        minYDCAB=tempMaxMin[0];
+                        if(h[0]>=minXDCAB && h[0]<=maxXDCAB && h[1]>=minYDCAB && h[1]<=maxYDCAB)
+                            {
+
+                            }
+                        else if(h[0]>=minXFEAB && h[0]<=maxXFEAB && h[1]>=minYFEAB && h[1]<=maxYFEAB)
+                        {
+
+                        }
+                        else
+                            {
+                                g.setColor(yellowColor);
+                                // g.setColor(blueColorcolor);
+                                int recHDBFx[]={h[0],d[0],b[0],f[0]};
+                                int recHDBFy[]={h[1],d[1],b[1],f[1]};
+                                g.fillPolygon(recHDBFx, recHDBFy, 4);
+                            }
+
+                   }
+
+                    else if(clip==dv4)
+                    {
+                        tempMaxMin[0]=gg[0];
+                        tempMaxMin[1]=cc[0];
+                        tempMaxMin[2]=a[0];
+                        tempMaxMin[3]=ee[0];
+                        bubblesort();
+                        maxXGCAE=tempMaxMin[3];
+                        minXGCAE=tempMaxMin[0];
+                        tempMaxMin[0]=gg[1];
+                        tempMaxMin[1]=cc[1];
+                        tempMaxMin[2]=a[1];
+                        tempMaxMin[3]=ee[1];
+                        bubblesort();
+                        maxYGCAE=tempMaxMin[3];
+                        minYGCAE=tempMaxMin[0];
+
+                        tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=gg[0];
+                        tempMaxMin[2]=ee[0];
+                        tempMaxMin[3]=f[0];
+                        bubblesort();
+                        maxXHGEF=tempMaxMin[3];
+                        minXHGEF=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=gg[1];
+                        tempMaxMin[2]=ee[1];
+                        tempMaxMin[3]=f[1];
+                        bubblesort();
+                        maxYHGEF=tempMaxMin[3];
+                        minYHGEF=tempMaxMin[0];
+
+                        if(b[0]>=minXHGEF && b[0]<=maxXHGEF && b[1]>=minYHGEF && b[1]<=maxYHGEF)
+                        {
+
+                        }
+                        else if(b[0]>=minXGCAE && b[0]<=maxXGCAE && b[1]>=minYGCAE && b[1]<=maxYGCAE)
+                        {
+
+                        }
+                        else
+                        {
+                            g.setColor(yellowColor);
+                                // g.setColor(blueColorcolor);
+                                int recHDBFx[]={h[0],d[0],b[0],f[0]};
+                                int recHDBFy[]={h[1],d[1],b[1],f[1]};
+                                g.fillPolygon(recHDBFx, recHDBFy, 4);
+                        }
+                    }
+                    else if(clip==dv2)
+                    {
+                        tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=gg[0];
+                        tempMaxMin[2]=ee[0];
+                        tempMaxMin[3]=f[0];
+                        bubblesort();
+                        maxXHGEF=tempMaxMin[3];
+                        minXHGEF=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=gg[1];
+                        tempMaxMin[2]=ee[1];
+                        tempMaxMin[3]=f[1];
+                        bubblesort();
+                        maxYHGEF=tempMaxMin[3];
+                        minYHGEF=tempMaxMin[0];
+
+                        tempMaxMin[0]=f[0];
+                        tempMaxMin[1]=ee[0];
+                        tempMaxMin[2]=a[0];
+                        tempMaxMin[3]=b[0];
+                        bubblesort();
+                        maxXFEAB=tempMaxMin[3];
+                        minXFEAB=tempMaxMin[0];
+                        tempMaxMin[0]=f[1];
+                        tempMaxMin[1]=ee[1];
+                        tempMaxMin[2]=a[1];
+                        tempMaxMin[3]=b[1];
+                        bubblesort();
+                        maxYFEAB=tempMaxMin[3];
+                        minYFEAB=tempMaxMin[0];
+                        if(d[0]>=minXHGEF && d[0]<=maxXHGEF && d[1]>=minYHGEF && d[1]<=maxYHGEF)
+                        {
+
+                        }
+                        else if(d[0]>=minXFEAB && d[0]<=maxXFEAB && d[1]>=minYFEAB && d[1]<=maxYFEAB)
+                        {
+
+                        }
+                        else
+                        {
+                                g.setColor(yellowColor);
+                                // g.setColor(blueColorcolor);
+                                int recHDBFx[]={h[0],d[0],b[0],f[0]};
+                                int recHDBFy[]={h[1],d[1],b[1],f[1]};
+                                g.fillPolygon(recHDBFx, recHDBFy, 4);
+                        }
+                    }             
+                }       
+
+
+
+                if(dv1==clip || dv2==clip || dv5==clip || dv6== clip)
+                {
+
+                }
+               else
+                {
+                    if(clip==dv3)
+                    {
+                        tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=gg[0];
+                        tempMaxMin[2]=ee[0];
+                        tempMaxMin[3]=f[0];
+                        bubblesort();
+                        maxXHGEF=tempMaxMin[3];
+                        minXHGEF=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=gg[1];
+                        tempMaxMin[2]=ee[1];
+                        tempMaxMin[3]=f[1];
+                        bubblesort();
+                        maxYHGEF=tempMaxMin[3];
+                        minYHGEF=tempMaxMin[0];
+
+                        tempMaxMin[0]=gg[0];
+                        tempMaxMin[1]=cc[0];
+                        tempMaxMin[2]=a[0];
+                        tempMaxMin[3]=ee[0];
+                        bubblesort();
+                        maxXGCAE=tempMaxMin[3];
+                        minXGCAE=tempMaxMin[0];
+                        tempMaxMin[0]=gg[1];
+                        tempMaxMin[1]=cc[1];
+                        tempMaxMin[2]=a[1];
+                        tempMaxMin[3]=ee[1];
+                        bubblesort();
+                        maxYGCAE=tempMaxMin[3];
+                        minYGCAE=tempMaxMin[0];
+
+                        if(d[0]>=minXHGEF && d[0]<=maxXHGEF && d[1]>=minYHGEF && d[1]<=maxYHGEF)
+                        {
+
+                        }
+                        else if(d[0]>=minXGCAE && d[0]<=maxXGCAE && d[1]>=minYGCAE && d[1]<=maxYGCAE)
+                        {
+
+                        }
+                        else
+                        {
+                            g.setColor(redColor);
+                            // g.setColor(blueColorcolor);
+                            int recHGCDx[]={h[0],gg[0],cc[0],d[0]};
+                            int recHGCDy[]={h[1],gg[1],cc[1],d[1]};
+                            g.fillPolygon(recHGCDx, recHGCDy, 4);
+                        }
+                    }
+                    else if(clip==dv4)
+                    {
+                        tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=gg[0];
+                        tempMaxMin[2]=ee[0];
+                        tempMaxMin[3]=f[0];
+                        bubblesort();
+                        maxXHGEF=tempMaxMin[3];
+                        minXHGEF=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=gg[1];
+                        tempMaxMin[2]=ee[1];
+                        tempMaxMin[3]=f[1];
+                        bubblesort();
+                        maxYHGEF=tempMaxMin[3];
+                        minYHGEF=tempMaxMin[0];
+
+                        tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=d[0];
+                        tempMaxMin[2]=b[0];
+                        tempMaxMin[3]=f[0];
+                        bubblesort();
+                        maxXHDBF=tempMaxMin[3];
+                        minXHDBF=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=d[1];
+                        tempMaxMin[2]=b[1];
+                        tempMaxMin[3]=f[1];
+                        bubblesort();
+                        maxYHDBF=tempMaxMin[3];
+                        minYHDBF=tempMaxMin[0];
+                        if(cc[0]>=minXHGEF && cc[0]<=maxXHGEF && cc[0]>=minYHGEF && cc[1]<=maxYHGEF)
+                        {
+
+                        }
+                        else if (cc[0]>=minXHDBF && cc[0]<=maxXHDBF && cc[1]>=minYHDBF && cc[1]<=maxYHDBF)
+                        {
+
+                        }
+                        else
+                        {
+                            g.setColor(redColor);
+                            // g.setColor(blueColorcolor);
+                            int recHGCDx[]={h[0],gg[0],cc[0],d[0]};
+                            int recHGCDy[]={h[1],gg[1],cc[1],d[1]};
+                            g.fillPolygon(recHGCDx, recHGCDy, 4); 
+                        }
+
+                    }
+                    else if(clip==dv7)
+                    {
+                        tempMaxMin[0]=gg[0];
+                        tempMaxMin[1]=cc[0];
+                        tempMaxMin[2]=a[0];
+                        tempMaxMin[3]=ee[0];
+                        bubblesort();
+                        maxXGCAE=tempMaxMin[3];
+                        minXGCAE=tempMaxMin[0];
+                        tempMaxMin[0]=gg[1];
+                        tempMaxMin[1]=cc[1];
+                        tempMaxMin[2]=a[1];
+                        tempMaxMin[3]=ee[1];
+                        bubblesort();
+                        maxYGCAE=tempMaxMin[3];
+                        minYGCAE=tempMaxMin[0];
+
+                        tempMaxMin[0]=d[0];
+                        tempMaxMin[1]=a[0];
+                        tempMaxMin[2]=cc[0];
+                        tempMaxMin[3]=b[0];
+                        bubblesort();
+                        maxXDCAB=tempMaxMin[3];
+                        minXDCAB=tempMaxMin[0];
+                        tempMaxMin[0]=d[1];
+                        tempMaxMin[1]=a[1];
+                        tempMaxMin[2]=cc[1];
+                        tempMaxMin[3]=b[1];
+                        bubblesort();
+                        maxYDCAB=tempMaxMin[3];
+                        minYDCAB=tempMaxMin[0];
+                        if(h[0]>=minXDCAB && h[0]<=maxXDCAB && h[1]>=minYDCAB && h[1]<=maxYDCAB)
+                            {
+
+                            }
+                        else if(h[0]>=minXGCAE && h[0]<=maxXGCAE && d[1]>=minYGCAE && d[1]<=maxYGCAE)
+                        {
+
+                        }
+                        else
+                        {
+                            g.setColor(redColor);
+                            // g.setColor(blueColorcolor);
+                            int recHGCDx[]={h[0],gg[0],cc[0],d[0]};
+                            int recHGCDy[]={h[1],gg[1],cc[1],d[1]};
+                            g.fillPolygon(recHGCDx, recHGCDy, 4); 
+
+                        }
+                    }
+                    else if(clip==dv8)
+                    {
+                        tempMaxMin[0]=d[0];
+                        tempMaxMin[1]=a[0];
+                        tempMaxMin[2]=cc[0];
+                        tempMaxMin[3]=b[0];
+                        bubblesort();
+                        maxXDCAB=tempMaxMin[3];
+                        minXDCAB=tempMaxMin[0];
+                        tempMaxMin[0]=d[1];
+                        tempMaxMin[1]=a[1];
+                        tempMaxMin[2]=cc[1];
+                        tempMaxMin[3]=b[1];
+                        bubblesort();
+                        maxYDCAB=tempMaxMin[3];
+                        minYDCAB=tempMaxMin[0];
+
+                        tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=d[0];
+                        tempMaxMin[2]=b[0];
+                        tempMaxMin[3]=f[0];
+                        bubblesort();
+                        maxXHDBF=tempMaxMin[3];
+                        minXHDBF=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=d[1];
+                        tempMaxMin[2]=b[1];
+                        tempMaxMin[3]=f[1];
+                        bubblesort();
+                        maxYHDBF=tempMaxMin[3];
+                        minYHDBF=tempMaxMin[0];
+                        if(gg[0]>=minXDCAB && gg[0]<=maxXDCAB && gg[1]>=minYDCAB && gg[1]<=maxYDCAB)
+                            {
+
+                            }
+                        else if(gg[0]>=minXHDBF && gg[0]<=maxXHDBF && gg[1]>=minYHDBF && gg[1]<=maxYHDBF)
+                        {
+
+                        }
+                        else
+                        {
+                            g.setColor(redColor);
+                            // g.setColor(blueColorcolor);
+                            int recHGCDx[]={h[0],gg[0],cc[0],d[0]};
+                            int recHGCDy[]={h[1],gg[1],cc[1],d[1]};
+                            g.fillPolygon(recHGCDx, recHGCDy, 4); 
+
+                        }
+                    }
+                }
+                if(dv5==clip || dv6==clip || dv7==clip || dv8== clip)
+                {
+
+                }
+
+                else
+                {
+                    if(clip==dv1)
+                    {
+                        tempMaxMin[0]=gg[0];
+                        tempMaxMin[1]=cc[0];
+                        tempMaxMin[2]=a[0];
+                        tempMaxMin[3]=ee[0];
+                        bubblesort();
+                        maxXGCAE=tempMaxMin[3];
+                        minXGCAE=tempMaxMin[0];
+                        tempMaxMin[0]=gg[1];
+                        tempMaxMin[1]=cc[1];
+                        tempMaxMin[2]=a[1];
+                        tempMaxMin[3]=ee[1];
+                        bubblesort();
+                        maxYGCAE=tempMaxMin[3];
+                        minYGCAE=tempMaxMin[0];
+
+                        tempMaxMin[0]=f[0];
+                        tempMaxMin[1]=ee[0];
+                        tempMaxMin[2]=a[0];
+                        tempMaxMin[3]=b[0];
+                        bubblesort();
+                        maxXFEAB=tempMaxMin[3];
+                        minXFEAB=tempMaxMin[0];
+                        tempMaxMin[0]=f[1];
+                        tempMaxMin[1]=ee[1];
+                        tempMaxMin[2]=a[1];
+                        tempMaxMin[3]=b[1];
+                        bubblesort();
+                        maxYFEAB=tempMaxMin[3];
+                        minYFEAB=tempMaxMin[0];
+                        if(h[0]>=minXFEAB && h[0]<=maxXFEAB && h[1]>=minYFEAB && h[1]<=maxYFEAB)
+                        {
+
+                        }
+                        else if(h[0]>=minXGCAE && h[0]<=maxXGCAE && h[1]>=minYGCAE && h[1]<=maxYGCAE)
+                        {
+
+                        }
+                        else
+                        {
+                            g.setColor(greenColor);
+                            // g.setColor(blueColorcolor);
+                            int recHGEFx[]={h[0],gg[0],ee[0],f[0]};
+                            int recHGEFy[]={h[1],gg[1],ee[1],f[1]};
+                            g.fillPolygon(recHGEFx, recHGEFy, 4);
+
+                        }
+
+
+                    }
+                    else if(clip==dv2)
+                    {
+                        tempMaxMin[0]=f[0];
+                        tempMaxMin[1]=ee[0];
+                        tempMaxMin[2]=a[0];
+                        tempMaxMin[3]=b[0];
+                        bubblesort();
+                        maxXFEAB=tempMaxMin[3];
+                        minXFEAB=tempMaxMin[0];
+                        tempMaxMin[0]=f[1];
+                        tempMaxMin[1]=ee[1];
+                        tempMaxMin[2]=a[1];
+                        tempMaxMin[3]=b[1];
+                        bubblesort();
+                        maxYFEAB=tempMaxMin[3];
+                        minYFEAB=tempMaxMin[0];
+
+                        tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=d[0];
+                        tempMaxMin[2]=b[0];
+                        tempMaxMin[3]=f[0];
+                        bubblesort();
+                        maxXHDBF=tempMaxMin[3];
+                        minXHDBF=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=d[1];
+                        tempMaxMin[2]=b[1];
+                        tempMaxMin[3]=f[1];
+                        bubblesort();
+                        maxYHDBF=tempMaxMin[3];
+                        minYHDBF=tempMaxMin[0];
+
+                        if(gg[0]>=minXFEAB && gg[0]<=maxXFEAB && gg[1]>=minYFEAB && gg[1]<=maxYFEAB)
+                        {
+
+                        }
+                        else if(gg[0]>=minXHDBF && gg[0]<=maxXHDBF && gg[1]>=minYHDBF && gg[1]<=maxYHDBF)
+                        {
+
+                        }
+                        else
+                        {
+                            g.setColor(greenColor);
+                            // g.setColor(blueColorcolor);
+                            int recHGEFx[]={h[0],gg[0],ee[0],f[0]};
+                            int recHGEFy[]={h[1],gg[1],ee[1],f[1]};
+                            g.fillPolygon(recHGEFx, recHGEFy, 4);
+
+                        }
+                    }
+                    else if(clip==dv3)
+                    {
+                        tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=gg[0];
+                        tempMaxMin[2]=cc[0];
+                        tempMaxMin[3]=d[0];
+                        bubblesort();
+                        maxXHGCD=tempMaxMin[3];
+                        minXHGCD=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=gg[1];
+                        tempMaxMin[2]=cc[1];
+                        tempMaxMin[3]=d[1];
+                        bubblesort();
+                        maxYHGCD=tempMaxMin[3];
+                        minYHGCD=tempMaxMin[0];
+
+                        tempMaxMin[0]=gg[0];
+                        tempMaxMin[1]=cc[0];
+                        tempMaxMin[2]=a[0];
+                        tempMaxMin[3]=ee[0];
+                        bubblesort();
+                        maxXGCAE=tempMaxMin[3];
+                        minXGCAE=tempMaxMin[0];
+                        tempMaxMin[0]=gg[1];
+                        tempMaxMin[1]=cc[1];
+                        tempMaxMin[2]=a[1];
+                        tempMaxMin[3]=ee[1];
+                        bubblesort();
+                        maxYGCAE=tempMaxMin[3];
+                        minYGCAE=tempMaxMin[0];
+
+                        if(f[0]>=minXHGCD && f[0]<=maxXHGCD && f[1]>=minYHGCD && f[1]<=maxYHGCD )
+                        {
+
+                        }
+                        else if(f[0]>=minXGCAE && f[0]<=maxXGCAE && f[1]>=minYGCAE && f[1]<=maxYGCAE)
+                        {
+
+                        }
+                        else
+                        {
+                            g.setColor(greenColor);
+                            // g.setColor(blueColorcolor);
+                            int recHGEFx[]={h[0],gg[0],ee[0],f[0]};
+                            int recHGEFy[]={h[1],gg[1],ee[1],f[1]};
+                            g.fillPolygon(recHGEFx, recHGEFy, 4);
+
+                        }  
+                    }
+                    else if(clip==dv4)
+                    {
+                        tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=d[0];
+                        tempMaxMin[2]=b[0];
+                        tempMaxMin[3]=f[0];
+                        bubblesort();
+                        maxXHDBF=tempMaxMin[3];
+                        minXHDBF=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=d[1];
+                        tempMaxMin[2]=b[1];
+                        tempMaxMin[3]=f[1];
+                        bubblesort();
+                        maxYHDBF=tempMaxMin[3];
+                        minYHDBF=tempMaxMin[0];
+
+                        tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=gg[0];
+                        tempMaxMin[2]=cc[0];
+                        tempMaxMin[3]=d[0];
+                        bubblesort();
+                        maxXHGCD=tempMaxMin[3];
+                        minXHGCD=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=gg[1];
+                        tempMaxMin[2]=cc[1];
+                        tempMaxMin[3]=d[1];
+                        bubblesort();
+                        maxYHGCD=tempMaxMin[3];
+                        minYHGCD=tempMaxMin[0];
+
+                        if(ee[0]>=minXHGCD && ee[0]<=maxXHGCD && ee[1]>=minYHGCD && ee[1]<=maxYHGCD)
+                        {
+
+                        }
+                        else if(ee[0]>=minXHDBF && ee[0]<=maxXHDBF && ee[1]>=minYHDBF && ee[1]<=maxYHDBF)
+                        {
+
+                        }
+                        else
+                        {
+                            g.setColor(greenColor);
+                            // g.setColor(blueColorcolor);
+                            int recHGEFx[]={h[0],gg[0],ee[0],f[0]};
+                            int recHGEFy[]={h[1],gg[1],ee[1],f[1]};
+                            g.fillPolygon(recHGEFx, recHGEFy, 4);
+
+                        }
+                    }
+                }
+
+
+                if(dv2==clip || dv4==clip || dv6==clip || dv8== clip)
+                {
+
+                }
+                else
+                {
+                    if(clip==dv1)
+                    {
+                        tempMaxMin[0]=f[0];
+                        tempMaxMin[1]=ee[0];
+                        tempMaxMin[2]=a[0];
+                        tempMaxMin[3]=b[0];
+                        bubblesort();
+                        maxXFEAB=tempMaxMin[3];
+                        minXFEAB=tempMaxMin[0];
+                        tempMaxMin[0]=f[1];
+                        tempMaxMin[1]=ee[1];
+                        tempMaxMin[2]=a[1];
+                        tempMaxMin[3]=b[1];
+                        bubblesort();
+                        maxYFEAB=tempMaxMin[3];
+                        minYFEAB=tempMaxMin[0];
+
+                        tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=gg[0];
+                        tempMaxMin[2]=ee[0];
+                        tempMaxMin[3]=f[0];
+                        bubblesort();
+                        maxXHGEF=tempMaxMin[3];
+                        minXHGEF=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=gg[1];
+                        tempMaxMin[2]=ee[1];
+                        tempMaxMin[3]=f[1];
+                        bubblesort();
+                        maxYHGEF=tempMaxMin[3];
+                        minYHGEF=tempMaxMin[0];
+
+                        if(cc[0]>=minXHGEF && cc[0]<=maxXHGEF && cc[1]>=minYHGEF && cc[1]<=maxYHGEF)
+                        {
+
+                        }
+                        else if(cc[0]>=minXFEAB && cc[0]<=maxXFEAB && cc[1]>=minYFEAB && cc[1]<=maxYFEAB)
+                        {
+
+                        }
+                        else
+                        {
+                            g.setColor(blackColor);
+                            // g.setColor(blueColorcolor);
+                            int recGCAEx[]={gg[0],cc[0],a[0],ee[0]};
+                            int recGCAEy[]={gg[1],cc[1],a[1],ee[1]};
+                            g.fillPolygon(recGCAEx, recGCAEy, 4);
+                        }
+
+                    }
+                   else if(clip==dv3)
+                   {
+                      tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=gg[0];
+                        tempMaxMin[2]=ee[0];
+                        tempMaxMin[3]=f[0];
+                        bubblesort();
+                        maxXHGEF=tempMaxMin[3];
+                        minXHGEF=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=gg[1];
+                        tempMaxMin[2]=ee[1];
+                        tempMaxMin[3]=f[1];
+                        bubblesort();
+                        maxYHGEF=tempMaxMin[3];
+                        minYHGEF=tempMaxMin[0];
+
+                        tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=gg[0];
+                        tempMaxMin[2]=cc[0];
+                        tempMaxMin[3]=d[0];
+                        bubblesort();
+                        maxXHGCD=tempMaxMin[3];
+                        minXHGCD=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=gg[1];
+                        tempMaxMin[2]=cc[1];
+                        tempMaxMin[3]=d[1];
+                        bubblesort();
+                        maxYHGCD=tempMaxMin[3];
+                        minYHGCD=tempMaxMin[0];
+
+                        if(a[0]>=minXHGCD && a[0]<=maxXHGCD && a[1]>=minYHGCD && a[1]<=maxYHGCD )
+                        {
+
+                        } 
+                        else if(a[0]>=minXHGEF && a[0]<=maxXHGEF && a[1]>=minYHGEF && a[1]<=maxYHGEF)
+                        {
+
+                        }
+                        else
+                        {
+                             g.setColor(blackColor);
+                            // g.setColor(blueColorcolor);
+                            int recGCAEx[]={gg[0],cc[0],a[0],ee[0]};
+                            int recGCAEy[]={gg[1],cc[1],a[1],ee[1]};
+                            g.fillPolygon(recGCAEx, recGCAEy, 4);
+                        }
+                   }
+                   else if(clip==dv5)
+                   {
+                       tempMaxMin[0]=f[0];
+                        tempMaxMin[1]=ee[0];
+                        tempMaxMin[2]=a[0];
+                        tempMaxMin[3]=b[0];
+                        bubblesort();
+                        maxXFEAB=tempMaxMin[3];
+                        minXFEAB=tempMaxMin[0];
+                        tempMaxMin[0]=f[1];
+                        tempMaxMin[1]=ee[1];
+                        tempMaxMin[2]=a[1];
+                        tempMaxMin[3]=b[1];
+                        bubblesort();
+                        maxYFEAB=tempMaxMin[3];
+                        minYFEAB=tempMaxMin[0];
+
+                        tempMaxMin[0]=d[0];
+                        tempMaxMin[1]=a[0];
+                        tempMaxMin[2]=cc[0];
+                        tempMaxMin[3]=b[0];
+                        bubblesort();
+                        maxXDCAB=tempMaxMin[3];
+                        minXDCAB=tempMaxMin[0];
+
+                        tempMaxMin[0]=d[1];
+                        tempMaxMin[1]=a[1];
+                        tempMaxMin[2]=cc[1];
+                        tempMaxMin[3]=b[1];
+                        bubblesort();
+                        maxYDCAB=tempMaxMin[3];
+                        minYDCAB=tempMaxMin[0];
+
+                       if(gg[0]>=minXFEAB && gg[0]<=maxXFEAB && gg[1]>=minYFEAB && gg[1]<=maxYFEAB)
+                        {
+
+                        }
+                       else if(gg[0]>=minXDCAB && gg[0]<=maxXDCAB && gg[1]>=minYDCAB && gg[1]<=maxYDCAB)
+                        {
+
+                        }
+                       else
+                       {
+                           g.setColor(blackColor);
+                            // g.setColor(blueColorcolor);
+                            int recGCAEx[]={gg[0],cc[0],a[0],ee[0]};
+                            int recGCAEy[]={gg[1],cc[1],a[1],ee[1]};
+                            g.fillPolygon(recGCAEx, recGCAEy, 4);
+                       }
+                   }
+                   else if(clip==dv7)
+                   {
+                        tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=gg[0];
+                        tempMaxMin[2]=cc[0];
+                        tempMaxMin[3]=d[0];
+                        bubblesort();
+                        maxXHGCD=tempMaxMin[3];
+                        minXHGCD=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=gg[1];
+                        tempMaxMin[2]=cc[1];
+                        tempMaxMin[3]=d[1];
+                        bubblesort();
+                        maxYHGCD=tempMaxMin[3];
+                        minYHGCD=tempMaxMin[0];
+
+                        tempMaxMin[0]=d[0];
+                        tempMaxMin[1]=cc[0];
+                        tempMaxMin[2]=a[0];
+                        tempMaxMin[3]=b[0];
+                        bubblesort();
+                        maxXDCAB=tempMaxMin[3];
+                        minXDCAB=tempMaxMin[0];
+                        tempMaxMin[0]=d[1];
+                        tempMaxMin[1]=cc[1];
+                        tempMaxMin[2]=a[1];
+                        tempMaxMin[3]=b[1];
+                        bubblesort();
+                        maxYDCAB=tempMaxMin[3];
+                        minYDCAB=tempMaxMin[0];
+                        if(ee[0]>=minXHGCD && ee[0]<=maxXHGCD && ee[1]>=minYHGCD && ee[1]<=maxYHGCD )
+                        {
+
+                        }
+
+                       else if(ee[0]>=minXDCAB && ee[0]<=maxXDCAB && ee[1]>=minYDCAB && ee[1]<=maxYDCAB)
+                        {
+
+                        }
+                        else
+                       {
+                           g.setColor(blackColor);
+                            // g.setColor(blueColorcolor);
+                            int recGCAEx[]={gg[0],cc[0],a[0],ee[0]};
+                            int recGCAEy[]={gg[1],cc[1],a[1],ee[1]};
+                            g.fillPolygon(recGCAEx, recGCAEy, 4);
+                       }
+
+                   }
+
+                }
+
+                if(dv3==clip || dv4==clip || dv7==clip ||  dv8== clip)
+                {
+
+                }
+
+                else
+                {
+                    if(clip==dv1)
+                    {
+                        tempMaxMin[0]=gg[0];
+                        tempMaxMin[1]=cc[0];
+                        tempMaxMin[2]=a[0];
+                        tempMaxMin[3]=ee[0];
+                        bubblesort();
+                        maxXGCAE=tempMaxMin[3];
+                        minXGCAE=tempMaxMin[0];
+                        tempMaxMin[0]=gg[1];
+                        tempMaxMin[1]=cc[1];
+                        tempMaxMin[2]=a[1];
+                        tempMaxMin[3]=ee[1];
+                        bubblesort();
+                        maxYGCAE=tempMaxMin[3];
+                        minYGCAE=tempMaxMin[0];
+
+                        tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=gg[0];
+                        tempMaxMin[2]=ee[0];
+                        tempMaxMin[3]=f[0];
+                        bubblesort();
+                        maxXHGEF=tempMaxMin[3];
+                        minXHGEF=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=gg[1];
+                        tempMaxMin[2]=ee[1];
+                        tempMaxMin[3]=f[1];
+                        bubblesort();
+                        maxYHGEF=tempMaxMin[3];
+                        minYHGEF=tempMaxMin[0];
+                        if(b[0]>=minXHGEF && b[0]<=maxXHGEF && b[1]>=minYHGEF && b[1]<=maxYHGEF)
+                        {
+
+                        }
+                        else if(b[0]>=minXGCAE && b[0]<=maxXGCAE && b[1]>=minYGCAE && b[1]<=maxYGCAE)
+                        {
+
+                        }
+                        else
+                        {
+                            g.setColor(pinkColor);
+                            // g.setColor(blueColorcolor);
+                            int recFEABx[]={f[0],ee[0],a[0],b[0]};
+                            int recFEABy[]={f[1],ee[1],a[1],b[1]};
+                            g.fillPolygon(recFEABx, recFEABy, 4);
+                        }
+                    }
+                    else if(clip==dv2)
+                    {
+                        tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=gg[0];
+                        tempMaxMin[2]=ee[0];
+                        tempMaxMin[3]=f[0];
+                        bubblesort();
+                        maxXHGEF=tempMaxMin[3];
+                        minXHGEF=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=gg[1];
+                        tempMaxMin[2]=ee[1];
+                        tempMaxMin[3]=f[1];
+                        bubblesort();
+                        maxYHGEF=tempMaxMin[3];
+                        minYHGEF=tempMaxMin[0];
+
+                        tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=d[0];
+                        tempMaxMin[2]=b[0];
+                        tempMaxMin[3]=f[0];
+                        bubblesort();
+                        maxXHDBF=tempMaxMin[3];
+                        minXHDBF=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=d[1];
+                        tempMaxMin[2]=b[1];
+                        tempMaxMin[3]=f[1];
+                        bubblesort();
+                        maxYHDBF=tempMaxMin[3];
+                        minYHDBF=tempMaxMin[0];
+
+                        if(a[0]>=minXHGEF && a[0]<=maxXHGEF && a[1]>=minYHGEF && a[1]<=maxYHGEF)
+                        {
+
+                        }
+                        else if(a[0]>=minXHDBF && a[0]<=maxXHDBF && a[1]>=minYHDBF && a[1]<=maxYHDBF)
+                        {
+
+                        }
+                        else
+                        {
+                            g.setColor(pinkColor);
+                            // g.setColor(blueColorcolor);
+                            int recFEABx[]={f[0],ee[0],a[0],b[0]};
+                            int recFEABy[]={f[1],ee[1],a[1],b[1]};
+                            g.fillPolygon(recFEABx, recFEABy, 4);
+                        }
+                    }
+                    else if(clip==dv5)
+                    {
+                        tempMaxMin[0]=gg[0];
+                        tempMaxMin[1]=cc[0];
+                        tempMaxMin[2]=a[0];
+                        tempMaxMin[3]=ee[0];
+                        bubblesort();
+                        maxXGCAE=tempMaxMin[3];
+                        minXGCAE=tempMaxMin[0];
+                        tempMaxMin[0]=gg[1];
+                        tempMaxMin[1]=cc[1];
+                        tempMaxMin[2]=a[1];
+                        tempMaxMin[3]=ee[1];
+                        bubblesort();
+                        maxYGCAE=tempMaxMin[3];
+                        minYGCAE=tempMaxMin[0];
+
+                        tempMaxMin[0]=d[0];
+                        tempMaxMin[1]=a[0];
+                        tempMaxMin[2]=cc[0];
+                        tempMaxMin[3]=b[0];
+                        bubblesort();
+                        maxXDCAB=tempMaxMin[3];
+                        minXDCAB=tempMaxMin[0];
+
+                        tempMaxMin[0]=d[1];
+                        tempMaxMin[1]=a[1];
+                        tempMaxMin[2]=cc[1];
+                        tempMaxMin[3]=b[1];
+                        bubblesort();
+                        maxYDCAB=tempMaxMin[3];
+                        minYDCAB=tempMaxMin[0];
+
+
+                        if(f[0]>=minXGCAE && f[0]<=maxXGCAE && f[1]>=minYHDBF && f[1]<=maxYHDBF)
+                        {
+
+                        }
+                        else if(f[0]>=minXDCAB && f[0]<=maxXDCAB && f[1]>=minYDCAB && f[1]<=maxYDCAB)
+                        {
+
+                        }
+                        else
+                        {
+                            g.setColor(pinkColor);
+                            // g.setColor(blueColorcolor);
+                            int recFEABx[]={f[0],ee[0],a[0],b[0]};
+                            int recFEABy[]={f[1],ee[1],a[1],b[1]};
+                            g.fillPolygon(recFEABx, recFEABy, 4);
+                        }
+                    }
+                    else if(clip==dv6)
+                    {
+                        tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=d[0];
+                        tempMaxMin[2]=b[0];
+                        tempMaxMin[3]=f[0];
+                        bubblesort();
+                        maxXHDBF=tempMaxMin[3];
+                        minXHDBF=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=d[1];
+                        tempMaxMin[2]=b[1];
+                        tempMaxMin[3]=f[1];
+                        bubblesort();
+                        maxYHDBF=tempMaxMin[3];
+                        minYHDBF=tempMaxMin[0];
+
+                        tempMaxMin[0]=d[0];
+                        tempMaxMin[1]=a[0];
+                        tempMaxMin[2]=cc[0];
+                        tempMaxMin[3]=b[0];
+                        bubblesort();
+                        maxXDCAB=tempMaxMin[3];
+                        minXDCAB=tempMaxMin[0];
+
+                        tempMaxMin[0]=d[1];
+                        tempMaxMin[1]=a[1];
+                        tempMaxMin[2]=cc[1];
+                        tempMaxMin[3]=b[1];
+                        bubblesort();
+                        maxYDCAB=tempMaxMin[3];
+                        minYDCAB=tempMaxMin[0];
+
+                        if(ee[0]>=minXDCAB && ee[0]<=maxXDCAB && ee[1]>=minYDCAB && ee[1]<=maxYDCAB)
+                            {
+
+                            }
+                        else if(ee[0]>=minXHDBF && ee[0]<=maxXHDBF && ee[1]>=minYHDBF && ee[1]<=maxYHDBF)
+                            {
+
+                            }
+                        else
+                        {
+                            g.setColor(pinkColor);
+                            // g.setColor(blueColorcolor);
+                            int recFEABx[]={f[0],ee[0],a[0],b[0]};
+                            int recFEABy[]={f[1],ee[1],a[1],b[1]};
+                            g.fillPolygon(recFEABx, recFEABy, 4);
+                        }
+
+
+                    }
+                }
+       }
+        if(choosecolor2==1)
+        {
+
+            calculateMidpoints();
+            calculateThreepointsofFace();
+           // calculateAngles();
+            //calculate face margins
+
+                if(dv1==clip || dv2==clip || dv3==clip || dv4== clip)   
+                {
+
+                }
+                else
+                {
+                    //if pt1 is adjacent search for cliiping within face if neccessary
+                   if (clip==dv8)
+                   {
+                       //see if dv1 lies inside face
+
+
+                        tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=gg[0];
+                        tempMaxMin[2]=cc[0];
+                        tempMaxMin[3]=d[0];
+                        bubblesort();
+                        maxXHGCD=tempMaxMin[3];
+                        minXHGCD=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=gg[1];
+                        tempMaxMin[2]=cc[1];
+                        tempMaxMin[3]=d[1];
+                        bubblesort();
+                        maxYHGCD=tempMaxMin[3];
+                        minYHGCD=tempMaxMin[0];
+
+                        tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=d[0];
+                        tempMaxMin[2]=b[0];
+                        tempMaxMin[3]=f[0];
+                        bubblesort();
+                        maxXHDBF=tempMaxMin[3];
+                        minXHDBF=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=d[1];
+                        tempMaxMin[2]=b[1];
+                        tempMaxMin[3]=f[1];
+                        bubblesort();
+                        maxYHDBF=tempMaxMin[3];
+                        minYHDBF=tempMaxMin[0];
+                        if(a[0]>=minXHGCD && a[0]<=maxXHGCD && a[1]>=minYHGCD && a[1]<=maxYHGCD )
+                        {
+
+                        }
+                       else if(a[0]>=minXHDBF && a[0]<=maxXHDBF && a[1]>=minYHDBF && a[1]<=maxYHDBF)
+                        {
+
+                        }
+                        else
+                        {
+                            g.setColor(blueColor);
+                            // g.setColor(blueColorcolor);
+                            int recDCABx[]={d[0],cc[0],a[0],b[0]};
+                            int recDCABy[]={d[1],cc[1],a[1],b[1]};
+                            g.fillPolygon(recDCABx, recDCABy, 4);
+                        }
+                    }
+
+
+                   else if (clip==dv7) 
+                   {
+                       //see if dv2 lies inside any face
+                       tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=gg[0];
+                        tempMaxMin[2]=cc[0];
+                        tempMaxMin[3]=d[0];
+                        bubblesort();
+                        maxXHGCD=tempMaxMin[3];
+                        minXHGCD=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=gg[1];
+                        tempMaxMin[2]=cc[1];
+                        tempMaxMin[3]=d[1];
+                        bubblesort();
+                        maxYHGCD=tempMaxMin[3];
+                        minYHGCD=tempMaxMin[0];
+
+                        tempMaxMin[0]=gg[0];
+                        tempMaxMin[1]=cc[0];
+                        tempMaxMin[2]=a[0];
+                        tempMaxMin[3]=ee[0];
+                        bubblesort();
+                        maxXGCAE=tempMaxMin[3];
+                        minXGCAE=tempMaxMin[0];
+                        tempMaxMin[0]=gg[1];
+                        tempMaxMin[1]=cc[1];
+                        tempMaxMin[2]=a[1];
+                        tempMaxMin[3]=ee[1];
+                        bubblesort();
+                        maxYGCAE=tempMaxMin[3];
+                        minYGCAE=tempMaxMin[0];
+                        if(b[0]>=minXHGCD && b[0]<=maxXHGCD && b[1]>=minYHGCD && b[1]<=maxYHGCD )
+                        {
+
+                        }
+
+                       else if(b[0]>=minXGCAE && b[0]<=maxXGCAE && a[1]>=minYHDBF && a[1]<=maxYHDBF)
+                        {
+
+                        }
+                        else
+                        {
+                            g.setColor(blueColor);
+                            // g.setColor(blueColorcolor);
+                            int recDCABx[]={d[0],cc[0],a[0],b[0]};
+                            int recDCABy[]={d[1],cc[1],a[1],b[1]};
+                            g.fillPolygon(recDCABx, recDCABy, 4);
+                        }
+                   }
+                   else if(clip==dv6)
+                   {
+                       //see if dv3 lies inside
+                       tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=d[0];
+                        tempMaxMin[2]=b[0];
+                        tempMaxMin[3]=f[0];
+                        bubblesort();
+                        maxXHDBF=tempMaxMin[3];
+                        minXHDBF=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=d[1];
+                        tempMaxMin[2]=b[1];
+                        tempMaxMin[3]=f[1];
+                        bubblesort();
+                        maxYHDBF=tempMaxMin[3];
+                        minYHDBF=tempMaxMin[0];
+
+                        tempMaxMin[0]=f[0];
+                        tempMaxMin[1]=ee[0];
+                        tempMaxMin[2]=a[0];
+                        tempMaxMin[3]=b[0];
+                        bubblesort();
+                        maxXFEAB=tempMaxMin[3];
+                        minXFEAB=tempMaxMin[0];
+                        tempMaxMin[0]=f[1];
+                        tempMaxMin[1]=ee[1];
+                        tempMaxMin[2]=a[1];
+                        tempMaxMin[3]=b[1];
+                        bubblesort();
+                        maxYFEAB=tempMaxMin[3];
+                        minYFEAB=tempMaxMin[0];
+
+                        if(cc[0]>=minXHDBF && cc[0]<=maxXHDBF && cc[1]>=minYHDBF && cc[1]<=maxYHDBF)
+                        {
+
+                        }
+                        else if(cc[0]>=minXFEAB && cc[0]<=maxXFEAB && cc[1]>=minYFEAB && cc[1]<=maxYFEAB)
+                        {
+
+                        }
+                        else
+                        {
+                            g.setColor(blueColor);
+                            // g.setColor(blueColorcolor);
+                            int recDCABx[]={d[0],cc[0],a[0],b[0]};
+                            int recDCABy[]={d[1],cc[1],a[1],b[1]};
+                            g.fillPolygon(recDCABx, recDCABy, 4);
+                        }
+
+                   }
+                   else if(clip==dv5)
+                   {
+                       //see if dv4 lies inside any face
+                       tempMaxMin[0]=f[0];
+                        tempMaxMin[1]=ee[0];
+                        tempMaxMin[2]=a[0];
+                        tempMaxMin[3]=b[0];
+                        bubblesort();
+                        maxXFEAB=tempMaxMin[3];
+                        minXFEAB=tempMaxMin[0];
+                        tempMaxMin[0]=f[1];
+                        tempMaxMin[1]=ee[1];
+                        tempMaxMin[2]=a[1];
+                        tempMaxMin[3]=b[1];
+                        bubblesort();
+                        maxYFEAB=tempMaxMin[3];
+                        minYFEAB=tempMaxMin[0];
+
+                        tempMaxMin[0]=gg[0];
+                        tempMaxMin[1]=cc[0];
+                        tempMaxMin[2]=a[0];
+                        tempMaxMin[3]=ee[0];
+                        bubblesort();
+                        maxXGCAE=tempMaxMin[3];
+                        minXGCAE=tempMaxMin[0];
+                        tempMaxMin[0]=gg[1];
+                        tempMaxMin[1]=cc[1];
+                        tempMaxMin[2]=a[1];
+                        tempMaxMin[3]=ee[1];
+                        bubblesort();
+                        maxYGCAE=tempMaxMin[3];
+                        minYGCAE=tempMaxMin[0];
+
+                        if(d[0]>=minXGCAE && d[0]<=maxXGCAE && d[1]>=minYHDBF && d[1]<=maxYHDBF)
+                        {
+
+                        }
+                        else if(d[0]>=minXFEAB && d[0]<=maxXFEAB && d[1]>=minYFEAB && d[1]<=maxYFEAB)
+                        {
+
+                        }
+                        else
+                        {
+                            g.setColor(blueColor);
+                            // g.setColor(blueColorcolor);
+                            int recDCABx[]={d[0],cc[0],a[0],b[0]};
+                            int recDCABy[]={d[1],cc[1],a[1],b[1]};
+                            g.fillPolygon(recDCABx, recDCABy, 4);
+                        }
+
+
+                       //if not then draw recDCAB
+                   } 
+                }
+                if(dv1==clip || dv3==clip || dv5==clip || dv7== clip)
+                {
+
+                }
+
+                 else
+                {
+                    if (clip==dv8)
+                   {
+                       //see if dv1 lies inside face
+                        tempMaxMin[0]=d[0];
+                        tempMaxMin[1]=a[0];
+                        tempMaxMin[2]=cc[0];
+                        tempMaxMin[3]=b[0];
+                        bubblesort();
+                        maxXDCAB=tempMaxMin[3];
+                        minXDCAB=tempMaxMin[0];
+
+                        tempMaxMin[0]=d[1];
+                        tempMaxMin[1]=a[1];
+                        tempMaxMin[2]=cc[1];
+                        tempMaxMin[3]=b[1];
+                        bubblesort();
+                        maxYDCAB=tempMaxMin[3];
+                        minYDCAB=tempMaxMin[0];
+
+                        tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=gg[0];
+                        tempMaxMin[2]=cc[0];
+                        tempMaxMin[3]=d[0];
+                        bubblesort();
+                        maxXHGCD=tempMaxMin[3];
+                        minXHGCD=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=gg[1];
+                        tempMaxMin[2]=cc[1];
+                        tempMaxMin[3]=d[1];
+                        bubblesort();
+                        maxYHGCD=tempMaxMin[3];
+                        minYHGCD=tempMaxMin[0];
+                    if(f[0]>=minXDCAB && f[0]<=maxXDCAB && f[1]>=minYDCAB && f[1]<=maxYDCAB)
+                    {
+
+                    }
+                    else if(f[0]>=minXHGCD && f[0]<=maxXHGCD && f[1]>=minYHGCD && f[1]<=maxYHGCD )
+                    {
+
+                    }
+                    else
+                    {
+                        g.setColor(yellowColor);
+               // g.setColor(blueColorcolor);
+               int recHDBFx[]={h[0],d[0],b[0],f[0]};
+               int recHDBFy[]={h[1],d[1],b[1],f[1]};
+               g.fillPolygon(recHDBFx, recHDBFy, 4);
+                    }       
+               }
+                    else if(clip==dv6)
+                   {
+                        tempMaxMin[0]=f[0];
+                        tempMaxMin[1]=ee[0];
+                        tempMaxMin[2]=a[0];
+                        tempMaxMin[3]=b[0];
+                        bubblesort();
+                        maxXFEAB=tempMaxMin[3];
+                        minXFEAB=tempMaxMin[0];
+                        tempMaxMin[0]=f[1];
+                        tempMaxMin[1]=ee[1];
+                        tempMaxMin[2]=a[1];
+                        tempMaxMin[3]=b[1];
+                        bubblesort();
+                        maxYFEAB=tempMaxMin[3];
+                        minYFEAB=tempMaxMin[0];
+
+                        tempMaxMin[0]=d[0];
+                        tempMaxMin[1]=a[0];
+                        tempMaxMin[2]=cc[0];
+                        tempMaxMin[3]=b[0];
+                        bubblesort();
+                        maxXDCAB=tempMaxMin[3];
+                        minXDCAB=tempMaxMin[0];
+                        tempMaxMin[0]=d[1];
+                        tempMaxMin[1]=a[1];
+                        tempMaxMin[2]=cc[1];
+                        tempMaxMin[3]=b[1];
+                        bubblesort();
+                        maxYDCAB=tempMaxMin[3];
+                        minYDCAB=tempMaxMin[0];
+                        if(h[0]>=minXDCAB && h[0]<=maxXDCAB && h[1]>=minYDCAB && h[1]<=maxYDCAB)
+                            {
+
+                            }
+                        else if(h[0]>=minXFEAB && h[0]<=maxXFEAB && h[1]>=minYFEAB && h[1]<=maxYFEAB)
+                        {
+
+                        }
+                        else
+                            {
+                                g.setColor(yellowColor);
+                                // g.setColor(blueColorcolor);
+                                int recHDBFx[]={h[0],d[0],b[0],f[0]};
+                                int recHDBFy[]={h[1],d[1],b[1],f[1]};
+                                g.fillPolygon(recHDBFx, recHDBFy, 4);
+                            }
+
+                   }
+
+                    else if(clip==dv4)
+                    {
+                        tempMaxMin[0]=gg[0];
+                        tempMaxMin[1]=cc[0];
+                        tempMaxMin[2]=a[0];
+                        tempMaxMin[3]=ee[0];
+                        bubblesort();
+                        maxXGCAE=tempMaxMin[3];
+                        minXGCAE=tempMaxMin[0];
+                        tempMaxMin[0]=gg[1];
+                        tempMaxMin[1]=cc[1];
+                        tempMaxMin[2]=a[1];
+                        tempMaxMin[3]=ee[1];
+                        bubblesort();
+                        maxYGCAE=tempMaxMin[3];
+                        minYGCAE=tempMaxMin[0];
+
+                        tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=gg[0];
+                        tempMaxMin[2]=ee[0];
+                        tempMaxMin[3]=f[0];
+                        bubblesort();
+                        maxXHGEF=tempMaxMin[3];
+                        minXHGEF=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=gg[1];
+                        tempMaxMin[2]=ee[1];
+                        tempMaxMin[3]=f[1];
+                        bubblesort();
+                        maxYHGEF=tempMaxMin[3];
+                        minYHGEF=tempMaxMin[0];
+
+                        if(b[0]>=minXHGEF && b[0]<=maxXHGEF && b[1]>=minYHGEF && b[1]<=maxYHGEF)
+                        {
+
+                        }
+                        else if(b[0]>=minXGCAE && b[0]<=maxXGCAE && b[1]>=minYGCAE && b[1]<=maxYGCAE)
+                        {
+
+                        }
+                        else
+                        {
+                            g.setColor(yellowColor);
+                                // g.setColor(blueColorcolor);
+                                int recHDBFx[]={h[0],d[0],b[0],f[0]};
+                                int recHDBFy[]={h[1],d[1],b[1],f[1]};
+                                g.fillPolygon(recHDBFx, recHDBFy, 4);
+                        }
+                    }
+                    else if(clip==dv2)
+                    {
+                        tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=gg[0];
+                        tempMaxMin[2]=ee[0];
+                        tempMaxMin[3]=f[0];
+                        bubblesort();
+                        maxXHGEF=tempMaxMin[3];
+                        minXHGEF=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=gg[1];
+                        tempMaxMin[2]=ee[1];
+                        tempMaxMin[3]=f[1];
+                        bubblesort();
+                        maxYHGEF=tempMaxMin[3];
+                        minYHGEF=tempMaxMin[0];
+
+                        tempMaxMin[0]=f[0];
+                        tempMaxMin[1]=ee[0];
+                        tempMaxMin[2]=a[0];
+                        tempMaxMin[3]=b[0];
+                        bubblesort();
+                        maxXFEAB=tempMaxMin[3];
+                        minXFEAB=tempMaxMin[0];
+                        tempMaxMin[0]=f[1];
+                        tempMaxMin[1]=ee[1];
+                        tempMaxMin[2]=a[1];
+                        tempMaxMin[3]=b[1];
+                        bubblesort();
+                        maxYFEAB=tempMaxMin[3];
+                        minYFEAB=tempMaxMin[0];
+                        if(d[0]>=minXHGEF && d[0]<=maxXHGEF && d[1]>=minYHGEF && d[1]<=maxYHGEF)
+                        {
+
+                        }
+                        else if(d[0]>=minXFEAB && d[0]<=maxXFEAB && d[1]>=minYFEAB && d[1]<=maxYFEAB)
+                        {
+
+                        }
+                        else
+                        {
+                                g.setColor(yellowColor);
+                                // g.setColor(blueColorcolor);
+                                int recHDBFx[]={h[0],d[0],b[0],f[0]};
+                                int recHDBFy[]={h[1],d[1],b[1],f[1]};
+                                g.fillPolygon(recHDBFx, recHDBFy, 4);
+                        }
+                    }             
+                }       
+
+
+
+                if(dv1==clip || dv2==clip || dv5==clip || dv6== clip)
+                {
+
+                }
+               else
+                {
+                    if(clip==dv3)
+                    {
+                        tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=gg[0];
+                        tempMaxMin[2]=ee[0];
+                        tempMaxMin[3]=f[0];
+                        bubblesort();
+                        maxXHGEF=tempMaxMin[3];
+                        minXHGEF=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=gg[1];
+                        tempMaxMin[2]=ee[1];
+                        tempMaxMin[3]=f[1];
+                        bubblesort();
+                        maxYHGEF=tempMaxMin[3];
+                        minYHGEF=tempMaxMin[0];
+
+                        tempMaxMin[0]=gg[0];
+                        tempMaxMin[1]=cc[0];
+                        tempMaxMin[2]=a[0];
+                        tempMaxMin[3]=ee[0];
+                        bubblesort();
+                        maxXGCAE=tempMaxMin[3];
+                        minXGCAE=tempMaxMin[0];
+                        tempMaxMin[0]=gg[1];
+                        tempMaxMin[1]=cc[1];
+                        tempMaxMin[2]=a[1];
+                        tempMaxMin[3]=ee[1];
+                        bubblesort();
+                        maxYGCAE=tempMaxMin[3];
+                        minYGCAE=tempMaxMin[0];
+
+                        if(d[0]>=minXHGEF && d[0]<=maxXHGEF && d[1]>=minYHGEF && d[1]<=maxYHGEF)
+                        {
+
+                        }
+                        else if(d[0]>=minXGCAE && d[0]<=maxXGCAE && d[1]>=minYGCAE && d[1]<=maxYGCAE)
+                        {
+
+                        }
+                        else
+                        {
+                            g.setColor(redColor);
+                            // g.setColor(blueColorcolor);
+                            int recHGCDx[]={h[0],gg[0],cc[0],d[0]};
+                            int recHGCDy[]={h[1],gg[1],cc[1],d[1]};
+                            g.fillPolygon(recHGCDx, recHGCDy, 4);
+                        }
+                    }
+                    else if(clip==dv4)
+                    {
+                        tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=gg[0];
+                        tempMaxMin[2]=ee[0];
+                        tempMaxMin[3]=f[0];
+                        bubblesort();
+                        maxXHGEF=tempMaxMin[3];
+                        minXHGEF=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=gg[1];
+                        tempMaxMin[2]=ee[1];
+                        tempMaxMin[3]=f[1];
+                        bubblesort();
+                        maxYHGEF=tempMaxMin[3];
+                        minYHGEF=tempMaxMin[0];
+
+                        tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=d[0];
+                        tempMaxMin[2]=b[0];
+                        tempMaxMin[3]=f[0];
+                        bubblesort();
+                        maxXHDBF=tempMaxMin[3];
+                        minXHDBF=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=d[1];
+                        tempMaxMin[2]=b[1];
+                        tempMaxMin[3]=f[1];
+                        bubblesort();
+                        maxYHDBF=tempMaxMin[3];
+                        minYHDBF=tempMaxMin[0];
+                        if(cc[0]>=minXHGEF && cc[0]<=maxXHGEF && cc[0]>=minYHGEF && cc[1]<=maxYHGEF)
+                        {
+
+                        }
+                        else if (cc[0]>=minXHDBF && cc[0]<=maxXHDBF && cc[1]>=minYHDBF && cc[1]<=maxYHDBF)
+                        {
+
+                        }
+                        else
+                        {
+                            g.setColor(redColor);
+                            // g.setColor(blueColorcolor);
+                            int recHGCDx[]={h[0],gg[0],cc[0],d[0]};
+                            int recHGCDy[]={h[1],gg[1],cc[1],d[1]};
+                            g.fillPolygon(recHGCDx, recHGCDy, 4); 
+                        }
+
+                    }
+                    else if(clip==dv7)
+                    {
+                        tempMaxMin[0]=gg[0];
+                        tempMaxMin[1]=cc[0];
+                        tempMaxMin[2]=a[0];
+                        tempMaxMin[3]=ee[0];
+                        bubblesort();
+                        maxXGCAE=tempMaxMin[3];
+                        minXGCAE=tempMaxMin[0];
+                        tempMaxMin[0]=gg[1];
+                        tempMaxMin[1]=cc[1];
+                        tempMaxMin[2]=a[1];
+                        tempMaxMin[3]=ee[1];
+                        bubblesort();
+                        maxYGCAE=tempMaxMin[3];
+                        minYGCAE=tempMaxMin[0];
+
+                        tempMaxMin[0]=d[0];
+                        tempMaxMin[1]=a[0];
+                        tempMaxMin[2]=cc[0];
+                        tempMaxMin[3]=b[0];
+                        bubblesort();
+                        maxXDCAB=tempMaxMin[3];
+                        minXDCAB=tempMaxMin[0];
+                        tempMaxMin[0]=d[1];
+                        tempMaxMin[1]=a[1];
+                        tempMaxMin[2]=cc[1];
+                        tempMaxMin[3]=b[1];
+                        bubblesort();
+                        maxYDCAB=tempMaxMin[3];
+                        minYDCAB=tempMaxMin[0];
+                        if(h[0]>=minXDCAB && h[0]<=maxXDCAB && h[1]>=minYDCAB && h[1]<=maxYDCAB)
+                            {
+
+                            }
+                        else if(h[0]>=minXGCAE && h[0]<=maxXGCAE && d[1]>=minYGCAE && d[1]<=maxYGCAE)
+                        {
+
+                        }
+                        else
+                        {
+                            g.setColor(redColor);
+                            // g.setColor(blueColorcolor);
+                            int recHGCDx[]={h[0],gg[0],cc[0],d[0]};
+                            int recHGCDy[]={h[1],gg[1],cc[1],d[1]};
+                            g.fillPolygon(recHGCDx, recHGCDy, 4); 
+
+                        }
+                    }
+                    else if(clip==dv8)
+                    {
+                        tempMaxMin[0]=d[0];
+                        tempMaxMin[1]=a[0];
+                        tempMaxMin[2]=cc[0];
+                        tempMaxMin[3]=b[0];
+                        bubblesort();
+                        maxXDCAB=tempMaxMin[3];
+                        minXDCAB=tempMaxMin[0];
+                        tempMaxMin[0]=d[1];
+                        tempMaxMin[1]=a[1];
+                        tempMaxMin[2]=cc[1];
+                        tempMaxMin[3]=b[1];
+                        bubblesort();
+                        maxYDCAB=tempMaxMin[3];
+                        minYDCAB=tempMaxMin[0];
+
+                        tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=d[0];
+                        tempMaxMin[2]=b[0];
+                        tempMaxMin[3]=f[0];
+                        bubblesort();
+                        maxXHDBF=tempMaxMin[3];
+                        minXHDBF=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=d[1];
+                        tempMaxMin[2]=b[1];
+                        tempMaxMin[3]=f[1];
+                        bubblesort();
+                        maxYHDBF=tempMaxMin[3];
+                        minYHDBF=tempMaxMin[0];
+                        if(gg[0]>=minXDCAB && gg[0]<=maxXDCAB && gg[1]>=minYDCAB && gg[1]<=maxYDCAB)
+                            {
+
+                            }
+                        else if(gg[0]>=minXHDBF && gg[0]<=maxXHDBF && gg[1]>=minYHDBF && gg[1]<=maxYHDBF)
+                        {
+
+                        }
+                        else
+                        {
+                            g.setColor(redColor);
+                            // g.setColor(blueColorcolor);
+                            int recHGCDx[]={h[0],gg[0],cc[0],d[0]};
+                            int recHGCDy[]={h[1],gg[1],cc[1],d[1]};
+                            g.fillPolygon(recHGCDx, recHGCDy, 4); 
+
+                        }
+                    }
+                }
+                if(dv5==clip || dv6==clip || dv7==clip || dv8== clip)
+                {
+
+                }
+
+                else
+                {
+                    if(clip==dv1)
+                    {
+                        tempMaxMin[0]=gg[0];
+                        tempMaxMin[1]=cc[0];
+                        tempMaxMin[2]=a[0];
+                        tempMaxMin[3]=ee[0];
+                        bubblesort();
+                        maxXGCAE=tempMaxMin[3];
+                        minXGCAE=tempMaxMin[0];
+                        tempMaxMin[0]=gg[1];
+                        tempMaxMin[1]=cc[1];
+                        tempMaxMin[2]=a[1];
+                        tempMaxMin[3]=ee[1];
+                        bubblesort();
+                        maxYGCAE=tempMaxMin[3];
+                        minYGCAE=tempMaxMin[0];
+
+                        tempMaxMin[0]=f[0];
+                        tempMaxMin[1]=ee[0];
+                        tempMaxMin[2]=a[0];
+                        tempMaxMin[3]=b[0];
+                        bubblesort();
+                        maxXFEAB=tempMaxMin[3];
+                        minXFEAB=tempMaxMin[0];
+                        tempMaxMin[0]=f[1];
+                        tempMaxMin[1]=ee[1];
+                        tempMaxMin[2]=a[1];
+                        tempMaxMin[3]=b[1];
+                        bubblesort();
+                        maxYFEAB=tempMaxMin[3];
+                        minYFEAB=tempMaxMin[0];
+                        if(h[0]>=minXFEAB && h[0]<=maxXFEAB && h[1]>=minYFEAB && h[1]<=maxYFEAB)
+                        {
+
+                        }
+                        else if(h[0]>=minXGCAE && h[0]<=maxXGCAE && h[1]>=minYGCAE && h[1]<=maxYGCAE)
+                        {
+
+                        }
+                        else
+                        {
+                            g.setColor(greenColor);
+                            // g.setColor(blueColorcolor);
+                            int recHGEFx[]={h[0],gg[0],ee[0],f[0]};
+                            int recHGEFy[]={h[1],gg[1],ee[1],f[1]};
+                            g.fillPolygon(recHGEFx, recHGEFy, 4);
+
+                        }
+
+
+                    }
+                    else if(clip==dv2)
+                    {
+                        tempMaxMin[0]=f[0];
+                        tempMaxMin[1]=ee[0];
+                        tempMaxMin[2]=a[0];
+                        tempMaxMin[3]=b[0];
+                        bubblesort();
+                        maxXFEAB=tempMaxMin[3];
+                        minXFEAB=tempMaxMin[0];
+                        tempMaxMin[0]=f[1];
+                        tempMaxMin[1]=ee[1];
+                        tempMaxMin[2]=a[1];
+                        tempMaxMin[3]=b[1];
+                        bubblesort();
+                        maxYFEAB=tempMaxMin[3];
+                        minYFEAB=tempMaxMin[0];
+
+                        tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=d[0];
+                        tempMaxMin[2]=b[0];
+                        tempMaxMin[3]=f[0];
+                        bubblesort();
+                        maxXHDBF=tempMaxMin[3];
+                        minXHDBF=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=d[1];
+                        tempMaxMin[2]=b[1];
+                        tempMaxMin[3]=f[1];
+                        bubblesort();
+                        maxYHDBF=tempMaxMin[3];
+                        minYHDBF=tempMaxMin[0];
+
+                        if(gg[0]>=minXFEAB && gg[0]<=maxXFEAB && gg[1]>=minYFEAB && gg[1]<=maxYFEAB)
+                        {
+
+                        }
+                        else if(gg[0]>=minXHDBF && gg[0]<=maxXHDBF && gg[1]>=minYHDBF && gg[1]<=maxYHDBF)
+                        {
+
+                        }
+                        else
+                        {
+                            g.setColor(greenColor);
+                            // g.setColor(blueColorcolor);
+                            int recHGEFx[]={h[0],gg[0],ee[0],f[0]};
+                            int recHGEFy[]={h[1],gg[1],ee[1],f[1]};
+                            g.fillPolygon(recHGEFx, recHGEFy, 4);
+
+                        }
+                    }
+                    else if(clip==dv3)
+                    {
+                        tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=gg[0];
+                        tempMaxMin[2]=cc[0];
+                        tempMaxMin[3]=d[0];
+                        bubblesort();
+                        maxXHGCD=tempMaxMin[3];
+                        minXHGCD=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=gg[1];
+                        tempMaxMin[2]=cc[1];
+                        tempMaxMin[3]=d[1];
+                        bubblesort();
+                        maxYHGCD=tempMaxMin[3];
+                        minYHGCD=tempMaxMin[0];
+
+                        tempMaxMin[0]=gg[0];
+                        tempMaxMin[1]=cc[0];
+                        tempMaxMin[2]=a[0];
+                        tempMaxMin[3]=ee[0];
+                        bubblesort();
+                        maxXGCAE=tempMaxMin[3];
+                        minXGCAE=tempMaxMin[0];
+                        tempMaxMin[0]=gg[1];
+                        tempMaxMin[1]=cc[1];
+                        tempMaxMin[2]=a[1];
+                        tempMaxMin[3]=ee[1];
+                        bubblesort();
+                        maxYGCAE=tempMaxMin[3];
+                        minYGCAE=tempMaxMin[0];
+
+                        if(f[0]>=minXHGCD && f[0]<=maxXHGCD && f[1]>=minYHGCD && f[1]<=maxYHGCD )
+                        {
+
+                        }
+                        else if(f[0]>=minXGCAE && f[0]<=maxXGCAE && f[1]>=minYGCAE && f[1]<=maxYGCAE)
+                        {
+
+                        }
+                        else
+                        {
+                            g.setColor(greenColor);
+                            // g.setColor(blueColorcolor);
+                            int recHGEFx[]={h[0],gg[0],ee[0],f[0]};
+                            int recHGEFy[]={h[1],gg[1],ee[1],f[1]};
+                            g.fillPolygon(recHGEFx, recHGEFy, 4);
+
+                        }  
+                    }
+                    else if(clip==dv4)
+                    {
+                        tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=d[0];
+                        tempMaxMin[2]=b[0];
+                        tempMaxMin[3]=f[0];
+                        bubblesort();
+                        maxXHDBF=tempMaxMin[3];
+                        minXHDBF=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=d[1];
+                        tempMaxMin[2]=b[1];
+                        tempMaxMin[3]=f[1];
+                        bubblesort();
+                        maxYHDBF=tempMaxMin[3];
+                        minYHDBF=tempMaxMin[0];
+
+                        tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=gg[0];
+                        tempMaxMin[2]=cc[0];
+                        tempMaxMin[3]=d[0];
+                        bubblesort();
+                        maxXHGCD=tempMaxMin[3];
+                        minXHGCD=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=gg[1];
+                        tempMaxMin[2]=cc[1];
+                        tempMaxMin[3]=d[1];
+                        bubblesort();
+                        maxYHGCD=tempMaxMin[3];
+                        minYHGCD=tempMaxMin[0];
+
+                        if(ee[0]>=minXHGCD && ee[0]<=maxXHGCD && ee[1]>=minYHGCD && ee[1]<=maxYHGCD)
+                        {
+
+                        }
+                        else if(ee[0]>=minXHDBF && ee[0]<=maxXHDBF && ee[1]>=minYHDBF && ee[1]<=maxYHDBF)
+                        {
+
+                        }
+                        else
+                        {
+                            g.setColor(greenColor);
+                            // g.setColor(blueColorcolor);
+                            int recHGEFx[]={h[0],gg[0],ee[0],f[0]};
+                            int recHGEFy[]={h[1],gg[1],ee[1],f[1]};
+                            g.fillPolygon(recHGEFx, recHGEFy, 4);
+
+                        }
+                    }
+                }
+
+
+                if(dv2==clip || dv4==clip || dv6==clip || dv8== clip)
+                {
+
+                }
+                else
+                {
+                    if(clip==dv1)
+                    {
+                        tempMaxMin[0]=f[0];
+                        tempMaxMin[1]=ee[0];
+                        tempMaxMin[2]=a[0];
+                        tempMaxMin[3]=b[0];
+                        bubblesort();
+                        maxXFEAB=tempMaxMin[3];
+                        minXFEAB=tempMaxMin[0];
+                        tempMaxMin[0]=f[1];
+                        tempMaxMin[1]=ee[1];
+                        tempMaxMin[2]=a[1];
+                        tempMaxMin[3]=b[1];
+                        bubblesort();
+                        maxYFEAB=tempMaxMin[3];
+                        minYFEAB=tempMaxMin[0];
+
+                        tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=gg[0];
+                        tempMaxMin[2]=ee[0];
+                        tempMaxMin[3]=f[0];
+                        bubblesort();
+                        maxXHGEF=tempMaxMin[3];
+                        minXHGEF=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=gg[1];
+                        tempMaxMin[2]=ee[1];
+                        tempMaxMin[3]=f[1];
+                        bubblesort();
+                        maxYHGEF=tempMaxMin[3];
+                        minYHGEF=tempMaxMin[0];
+
+                        if(cc[0]>=minXHGEF && cc[0]<=maxXHGEF && cc[1]>=minYHGEF && cc[1]<=maxYHGEF)
+                        {
+
+                        }
+                        else if(cc[0]>=minXFEAB && cc[0]<=maxXFEAB && cc[1]>=minYFEAB && cc[1]<=maxYFEAB)
+                        {
+
+                        }
+                        else
+                        {
+                            g.setColor(blackColor);
+                            // g.setColor(blueColorcolor);
+                            int recGCAEx[]={gg[0],cc[0],a[0],ee[0]};
+                            int recGCAEy[]={gg[1],cc[1],a[1],ee[1]};
+                            g.fillPolygon(recGCAEx, recGCAEy, 4);
+                        }
+
+                    }
+                   else if(clip==dv3)
+                   {
+                      tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=gg[0];
+                        tempMaxMin[2]=ee[0];
+                        tempMaxMin[3]=f[0];
+                        bubblesort();
+                        maxXHGEF=tempMaxMin[3];
+                        minXHGEF=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=gg[1];
+                        tempMaxMin[2]=ee[1];
+                        tempMaxMin[3]=f[1];
+                        bubblesort();
+                        maxYHGEF=tempMaxMin[3];
+                        minYHGEF=tempMaxMin[0];
+
+                        tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=gg[0];
+                        tempMaxMin[2]=cc[0];
+                        tempMaxMin[3]=d[0];
+                        bubblesort();
+                        maxXHGCD=tempMaxMin[3];
+                        minXHGCD=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=gg[1];
+                        tempMaxMin[2]=cc[1];
+                        tempMaxMin[3]=d[1];
+                        bubblesort();
+                        maxYHGCD=tempMaxMin[3];
+                        minYHGCD=tempMaxMin[0];
+
+                        if(a[0]>=minXHGCD && a[0]<=maxXHGCD && a[1]>=minYHGCD && a[1]<=maxYHGCD )
+                        {
+
+                        } 
+                        else if(a[0]>=minXHGEF && a[0]<=maxXHGEF && a[1]>=minYHGEF && a[1]<=maxYHGEF)
+                        {
+
+                        }
+                        else
+                        {
+                             g.setColor(blackColor);
+                            // g.setColor(blueColorcolor);
+                            int recGCAEx[]={gg[0],cc[0],a[0],ee[0]};
+                            int recGCAEy[]={gg[1],cc[1],a[1],ee[1]};
+                            g.fillPolygon(recGCAEx, recGCAEy, 4);
+                        }
+                   }
+                   else if(clip==dv5)
+                   {
+                       tempMaxMin[0]=f[0];
+                        tempMaxMin[1]=ee[0];
+                        tempMaxMin[2]=a[0];
+                        tempMaxMin[3]=b[0];
+                        bubblesort();
+                        maxXFEAB=tempMaxMin[3];
+                        minXFEAB=tempMaxMin[0];
+                        tempMaxMin[0]=f[1];
+                        tempMaxMin[1]=ee[1];
+                        tempMaxMin[2]=a[1];
+                        tempMaxMin[3]=b[1];
+                        bubblesort();
+                        maxYFEAB=tempMaxMin[3];
+                        minYFEAB=tempMaxMin[0];
+
+                        tempMaxMin[0]=d[0];
+                        tempMaxMin[1]=a[0];
+                        tempMaxMin[2]=cc[0];
+                        tempMaxMin[3]=b[0];
+                        bubblesort();
+                        maxXDCAB=tempMaxMin[3];
+                        minXDCAB=tempMaxMin[0];
+
+                        tempMaxMin[0]=d[1];
+                        tempMaxMin[1]=a[1];
+                        tempMaxMin[2]=cc[1];
+                        tempMaxMin[3]=b[1];
+                        bubblesort();
+                        maxYDCAB=tempMaxMin[3];
+                        minYDCAB=tempMaxMin[0];
+
+                       if(gg[0]>=minXFEAB && gg[0]<=maxXFEAB && gg[1]>=minYFEAB && gg[1]<=maxYFEAB)
+                        {
+
+                        }
+                       else if(gg[0]>=minXDCAB && gg[0]<=maxXDCAB && gg[1]>=minYDCAB && gg[1]<=maxYDCAB)
+                        {
+
+                        }
+                       else
+                       {
+                           g.setColor(blackColor);
+                            // g.setColor(blueColorcolor);
+                            int recGCAEx[]={gg[0],cc[0],a[0],ee[0]};
+                            int recGCAEy[]={gg[1],cc[1],a[1],ee[1]};
+                            g.fillPolygon(recGCAEx, recGCAEy, 4);
+                       }
+                   }
+                   else if(clip==dv7)
+                   {
+                        tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=gg[0];
+                        tempMaxMin[2]=cc[0];
+                        tempMaxMin[3]=d[0];
+                        bubblesort();
+                        maxXHGCD=tempMaxMin[3];
+                        minXHGCD=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=gg[1];
+                        tempMaxMin[2]=cc[1];
+                        tempMaxMin[3]=d[1];
+                        bubblesort();
+                        maxYHGCD=tempMaxMin[3];
+                        minYHGCD=tempMaxMin[0];
+
+                        tempMaxMin[0]=d[0];
+                        tempMaxMin[1]=cc[0];
+                        tempMaxMin[2]=a[0];
+                        tempMaxMin[3]=b[0];
+                        bubblesort();
+                        maxXDCAB=tempMaxMin[3];
+                        minXDCAB=tempMaxMin[0];
+                        tempMaxMin[0]=d[1];
+                        tempMaxMin[1]=cc[1];
+                        tempMaxMin[2]=a[1];
+                        tempMaxMin[3]=b[1];
+                        bubblesort();
+                        maxYDCAB=tempMaxMin[3];
+                        minYDCAB=tempMaxMin[0];
+                        if(ee[0]>=minXHGCD && ee[0]<=maxXHGCD && ee[1]>=minYHGCD && ee[1]<=maxYHGCD )
+                        {
+
+                        }
+
+                       else if(ee[0]>=minXDCAB && ee[0]<=maxXDCAB && ee[1]>=minYDCAB && ee[1]<=maxYDCAB)
+                        {
+
+                        }
+                        else
+                       {
+                           g.setColor(blackColor);
+                            // g.setColor(blueColorcolor);
+                            int recGCAEx[]={gg[0],cc[0],a[0],ee[0]};
+                            int recGCAEy[]={gg[1],cc[1],a[1],ee[1]};
+                            g.fillPolygon(recGCAEx, recGCAEy, 4);
+                       }
+
+                   }
+
+                }
+
+                if(dv3==clip || dv4==clip || dv7==clip ||  dv8== clip)
+                {
+
+                }
+
+                else
+                {
+                    if(clip==dv1)
+                    {
+                        tempMaxMin[0]=gg[0];
+                        tempMaxMin[1]=cc[0];
+                        tempMaxMin[2]=a[0];
+                        tempMaxMin[3]=ee[0];
+                        bubblesort();
+                        maxXGCAE=tempMaxMin[3];
+                        minXGCAE=tempMaxMin[0];
+                        tempMaxMin[0]=gg[1];
+                        tempMaxMin[1]=cc[1];
+                        tempMaxMin[2]=a[1];
+                        tempMaxMin[3]=ee[1];
+                        bubblesort();
+                        maxYGCAE=tempMaxMin[3];
+                        minYGCAE=tempMaxMin[0];
+
+                        tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=gg[0];
+                        tempMaxMin[2]=ee[0];
+                        tempMaxMin[3]=f[0];
+                        bubblesort();
+                        maxXHGEF=tempMaxMin[3];
+                        minXHGEF=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=gg[1];
+                        tempMaxMin[2]=ee[1];
+                        tempMaxMin[3]=f[1];
+                        bubblesort();
+                        maxYHGEF=tempMaxMin[3];
+                        minYHGEF=tempMaxMin[0];
+                        if(b[0]>=minXHGEF && b[0]<=maxXHGEF && b[1]>=minYHGEF && b[1]<=maxYHGEF)
+                        {
+
+                        }
+                        else if(b[0]>=minXGCAE && b[0]<=maxXGCAE && b[1]>=minYGCAE && b[1]<=maxYGCAE)
+                        {
+
+                        }
+                        else
+                        {
+                            g.setColor(pinkColor);
+                            // g.setColor(blueColorcolor);
+                            int recFEABx[]={f[0],ee[0],a[0],b[0]};
+                            int recFEABy[]={f[1],ee[1],a[1],b[1]};
+                            g.fillPolygon(recFEABx, recFEABy, 4);
+                        }
+                    }
+                    else if(clip==dv2)
+                    {
+                        tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=gg[0];
+                        tempMaxMin[2]=ee[0];
+                        tempMaxMin[3]=f[0];
+                        bubblesort();
+                        maxXHGEF=tempMaxMin[3];
+                        minXHGEF=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=gg[1];
+                        tempMaxMin[2]=ee[1];
+                        tempMaxMin[3]=f[1];
+                        bubblesort();
+                        maxYHGEF=tempMaxMin[3];
+                        minYHGEF=tempMaxMin[0];
+
+                        tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=d[0];
+                        tempMaxMin[2]=b[0];
+                        tempMaxMin[3]=f[0];
+                        bubblesort();
+                        maxXHDBF=tempMaxMin[3];
+                        minXHDBF=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=d[1];
+                        tempMaxMin[2]=b[1];
+                        tempMaxMin[3]=f[1];
+                        bubblesort();
+                        maxYHDBF=tempMaxMin[3];
+                        minYHDBF=tempMaxMin[0];
+
+                        if(a[0]>=minXHGEF && a[0]<=maxXHGEF && a[1]>=minYHGEF && a[1]<=maxYHGEF)
+                        {
+
+                        }
+                        else if(a[0]>=minXHDBF && a[0]<=maxXHDBF && a[1]>=minYHDBF && a[1]<=maxYHDBF)
+                        {
+
+                        }
+                        else
+                        {
+                            g.setColor(pinkColor);
+                            // g.setColor(blueColorcolor);
+                            int recFEABx[]={f[0],ee[0],a[0],b[0]};
+                            int recFEABy[]={f[1],ee[1],a[1],b[1]};
+                            g.fillPolygon(recFEABx, recFEABy, 4);
+                        }
+                    }
+                    else if(clip==dv5)
+                    {
+                        tempMaxMin[0]=gg[0];
+                        tempMaxMin[1]=cc[0];
+                        tempMaxMin[2]=a[0];
+                        tempMaxMin[3]=ee[0];
+                        bubblesort();
+                        maxXGCAE=tempMaxMin[3];
+                        minXGCAE=tempMaxMin[0];
+                        tempMaxMin[0]=gg[1];
+                        tempMaxMin[1]=cc[1];
+                        tempMaxMin[2]=a[1];
+                        tempMaxMin[3]=ee[1];
+                        bubblesort();
+                        maxYGCAE=tempMaxMin[3];
+                        minYGCAE=tempMaxMin[0];
+
+                        tempMaxMin[0]=d[0];
+                        tempMaxMin[1]=a[0];
+                        tempMaxMin[2]=cc[0];
+                        tempMaxMin[3]=b[0];
+                        bubblesort();
+                        maxXDCAB=tempMaxMin[3];
+                        minXDCAB=tempMaxMin[0];
+
+                        tempMaxMin[0]=d[1];
+                        tempMaxMin[1]=a[1];
+                        tempMaxMin[2]=cc[1];
+                        tempMaxMin[3]=b[1];
+                        bubblesort();
+                        maxYDCAB=tempMaxMin[3];
+                        minYDCAB=tempMaxMin[0];
+
+
+                        if(f[0]>=minXGCAE && f[0]<=maxXGCAE && f[1]>=minYHDBF && f[1]<=maxYHDBF)
+                        {
+
+                        }
+                        else if(f[0]>=minXDCAB && f[0]<=maxXDCAB && f[1]>=minYDCAB && f[1]<=maxYDCAB)
+                        {
+
+                        }
+                        else
+                        {
+                            g.setColor(pinkColor);
+                            // g.setColor(blueColorcolor);
+                            int recFEABx[]={f[0],ee[0],a[0],b[0]};
+                            int recFEABy[]={f[1],ee[1],a[1],b[1]};
+                            g.fillPolygon(recFEABx, recFEABy, 4);
+                        }
+                    }
+                    else if(clip==dv6)
+                    {
+                        tempMaxMin[0]=h[0];
+                        tempMaxMin[1]=d[0];
+                        tempMaxMin[2]=b[0];
+                        tempMaxMin[3]=f[0];
+                        bubblesort();
+                        maxXHDBF=tempMaxMin[3];
+                        minXHDBF=tempMaxMin[0];
+                        tempMaxMin[0]=h[1];
+                        tempMaxMin[1]=d[1];
+                        tempMaxMin[2]=b[1];
+                        tempMaxMin[3]=f[1];
+                        bubblesort();
+                        maxYHDBF=tempMaxMin[3];
+                        minYHDBF=tempMaxMin[0];
+
+                        tempMaxMin[0]=d[0];
+                        tempMaxMin[1]=a[0];
+                        tempMaxMin[2]=cc[0];
+                        tempMaxMin[3]=b[0];
+                        bubblesort();
+                        maxXDCAB=tempMaxMin[3];
+                        minXDCAB=tempMaxMin[0];
+
+                        tempMaxMin[0]=d[1];
+                        tempMaxMin[1]=a[1];
+                        tempMaxMin[2]=cc[1];
+                        tempMaxMin[3]=b[1];
+                        bubblesort();
+                        maxYDCAB=tempMaxMin[3];
+                        minYDCAB=tempMaxMin[0];
+
+                        if(ee[0]>=minXDCAB && ee[0]<=maxXDCAB && ee[1]>=minYDCAB && ee[1]<=maxYDCAB)
+                            {
+
+                            }
+                        else if(ee[0]>=minXHDBF && ee[0]<=maxXHDBF && ee[1]>=minYHDBF && ee[1]<=maxYHDBF)
+                            {
+
+                            }
+                        else
+                        {
+                            g.setColor(pinkColor);
+                            // g.setColor(blueColorcolor);
+                            int recFEABx[]={f[0],ee[0],a[0],b[0]};
+                            int recFEABy[]={f[1],ee[1],a[1],b[1]};
+                            g.fillPolygon(recFEABx, recFEABy, 4);
+                        }
+
+
+                    }
+                }
+       }
+    g.drawString("A", a[0],a[1]);
+    g.drawString("B", b[0], b[1]);
+    g.drawString("C", cc[0],cc[1]);
+    g.drawString("D", d[0], d[1]);
+    g.drawString("E", ee[0],ee[1]);
+    g.drawString("F", f[0], f[1]);
+    g.drawString("G", gg[0], gg[1]);
+    g.drawString("H", h[0], h[1]);   
+    }
+       }
+    }
+
+
+
+
+
+
